@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Total Wealth Calculator & Planner</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; connect-src 'self'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="Referrer-Policy" content="no-referrer">
+  <meta name="X-XSS-Protection" content="1; mode=block">
+  <meta name="color-scheme" content="light">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  
+  <style>
+    /* Global & Professional Typography */
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      background: #f8f9fa; 
+      color: #343a40; 
+      margin: 0; 
+      padding: 1.5rem; 
+      display: flex;
+      justify-content: center;
+      line-height: 1.6;
+    }
+    h1, h2, h3, legend {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      color: #212529;
+      margin-top: 0;
+    }
+    .container { 
+      max-width: 1200px; 
+      margin: auto; 
+      background: #ffffff; 
+      padding: 2rem; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: relative;
+    }
+    @media (min-width: 1024px) {
+        .container {
+            flex-direction: row;
+        }
+    }
+    .main-content {
+      flex: 3;
+    }
+    .ad-sidebar {
+      flex: 1;
+      min-width: 300px;
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .inputs { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 1.5rem; 
+    }
+    .card { 
+      background: #f1f3f5; 
+      border-radius: 8px; 
+      padding: 1.5rem; 
+      flex: 1 1 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      border: 1px solid #e9ecef;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .card-inputs {
+        flex: 1 1 50%;
+    }
+    .card-display {
+        flex: 1 1 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    button { 
+      background: #007bff; 
+      color: #fff; 
+      border: none; 
+      padding: 0.75rem 1.5rem; 
+      border-radius: 6px; 
+      cursor: pointer; 
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    button.add-btn {
+      background: #28a745;
+      margin-top: 15px;
+      width: 100%;
+    }
+    button.add-btn:hover {
+      background: #218838;
+      transform: translateY(-1px);
+    }
+    button:hover {
+      background: #0056b3;
+      transform: translateY(-1px);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .remove-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #dc3545;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border-radius: 50%;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+    }
+    .card:hover .remove-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .remove-btn:hover {
+        background: #c82333;
+    }
+    .exports, .chart-controls { 
+      margin-top: 1.5rem; 
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .ad-placement {
+      margin: 1.5rem 0;
+      text-align: center;
+      background: #e9ecef;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    .charts { 
+      display: grid; 
+      grid-template-columns: 1fr;
+      gap: 1.5rem; 
+      margin-top: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .charts {
+        grid-template-columns: 1fr 2fr;
+      }
+    }
+    .ad-placement.vertical {
+      height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .investment-group {
+        width: 100%;
+    }
+    .input-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .investment-breakdown {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .mini-chart-container {
+        flex: 0 0 150px;
+        text-align: center;
+        position: relative;
+        padding: 1rem;
+        background: #f9fafb;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .mini-chart-container h4 {
+        margin-top: 0;
+        font-size: 1rem;
+    }
+    .chart-label {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.8rem;
+        color: #777;
+    }
+    .faq-section {
+        margin-top: 3rem;
+        background: #f9fafb;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .faq-item h3 {
+        color: #007bff;
+        margin-top: 0;
+    }
+    .disclaimer-section {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #fff3cd;
+        border-left: 5px solid #ffc107;
+        border-radius: 8px;
+        color: #664d03;
+        font-style: italic;
+    }
+    hr {
+        border: 0;
+        height: 1px;
+        background: #e0e0e0;
+        margin: 2rem 0;
+    }
+    #share-buttons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .share-button {
+      background: none;
+      color: #007bff;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem;
+      transition: color 0.3s ease;
+      border: 1px solid #007bff;
+      border-radius: 4px;
+    }
+    .share-button:hover {
+      color: #0056b3;
+      border-color: #0056b3;
+    }
+    .share-icons {
+      display: none;
+      transition: all 0.3s ease;
+    }
+    .share-icons.active {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .social-icon {
+        width: 24px;
+        height: 24px;
+        fill: #555;
+    }
+    .social-icon:hover {
+        fill: #007bff;
+    }
+    .input-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+    .input-row label {
+        font-weight: 500;
+        color: #555;
+    }
+    .input-row .input-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.2rem;
+    }
+    .input-row input[type="number"], .input-row select {
+        flex-grow: 1;
+        padding: 0.6rem;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .input-row input[type="number"]:focus, .input-row select:focus {
+        outline: none;
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+    input::placeholder {
+        color: #adb5bd;
+    }
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0.4rem;
+    }
+    .slider-container input[type="range"] {
+      flex-grow: 1;
+      padding: 0;
+      cursor: pointer;
+    }
+    .slider-container .slider-value {
+      width: 60px;
+      text-align: right;
+      font-weight: normal;
+      color: #333;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      cursor: text;
+      -moz-appearance: textfield;
+    }
+    .chart-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .chart-values {
+      width: 100%;
+    }
+    .chart-values .value-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+    .chart-values .value-row:last-child {
+      border-bottom: none;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #007bff;
+    }
+    .chart-values .value-row span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .legend-box {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+    .chart-canvas {
+      width: 150px;
+      height: 150px;
+    }
+    #total-wealth-summary {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e0e0e0;
+    }
+    
+    /* New Aesthetic */
+    .header-content {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .header-content h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+    #inflation-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    #inflation-section input[type="number"] {
+        width: 80px;
+        text-align: right;
+    }
+    .inflation-toggle {
+        display: flex;
+        align-items: center;
+    }
+    .inflation-toggle input[type="checkbox"] {
+        width: auto;
+        margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-content">
+        <div id="share-buttons">
+          <button type="button" class="share-button" id="share-button">SHARE</button>
+          <div class="share-icons">
+            <a href="#" class="x-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H357.9L254.5 316.1 123.3 464H32.6l155.8-177.6L48 48h145.6l86.2 109.4L389.2 48zm-22.3 358.5l-140.8-164.7L46.4 68.3H112l104 122.5L373.1 443.7H366.9z"/></svg></a>
+            <a href="#" class="whatsapp-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339.6 50.8 285.3 25.1 224 25.1c-108 0-195.9 87.9-195.9 195.9 0 34.2 8.9 67.5 25.4 97.4l-31.5 115.1 117.8-30.8c28 15.3 59.2 23.9 91.2 23.9h.1c108 0 195.9-87.9 195.9-195.9 0-51.7-20.2-101-57.1-137.9zM224.1 411.3h-.1c-28.7 0-57.3-7.8-82.1-22.9l-5.4-3.2-56.1 14.7 14.9-54.5-3.5-5.7c-16.1-27-24.8-57.7-24.8-88.6 0-91 73.8-164.8 164.8-164.8 44.5 0 86.8 17.3 118.5 49s49 73.8 49 118.5c0 91.1-73.8 164.9-164.8 164.9zm50.6-118.5c-2.8-1.4-16.7-8.2-19.3-9.1s-4.5-1.4-6.4 1.4c-1.9 2.8-7.4 9.1-9.1 10.9-1.7 1.8-3.4 2-6.2 .6-2.8-1.4-11.8-4.3-22.5-13.9-8.3-7.4-13.9-16.5-15.5-19.3-1.6-2.8-.2-2.7 1.2-4.1 1.2-1.2 2.8-2.8 4.2-4.3 1.4-1.5 1.9-2.7 2.8-4.2 1-1.5 .5-2.8-.2-4.2-.7-1.4-6.4-15.4-8.8-21.1-2.4-5.7-4.8-4.9-6.6-4.9-.7-.1-1.5-.1-2.2-.1-2.5 0-6.4 1-8.7 3.3s-8.7 8.5-8.7 20.8c0 12.3 8.9 24.1 10.1 25.8s17.5 27 42.4 37.6c5.8 2.5 10.4 4 14 5.1 5.4 1.7 10.3 1.5 14.2 1c4.5-.5 16.7-6.8 19.1-13.5 2.4-6.8 2.4-12.6 1.7-13.9-.7-1.4-2.8-2.2-5.9-3.7z"/></svg></a>
+            <a href="#" class="gmail-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M497.9 146.9l-22.6-22.6-22.6-22.6-141.4-141.4c-9.4-9.4-24.6-9.4-33.9 0L14.1 230.1c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6 22.6 22.6 141.4 141.4c9.4 9.4 24.6 9.4 33.9 0L497.9 180.8c9.4-9.4 9.4-24.6 0-33.9zM256 320c-35.3 0-64-28.7-64-64s28.7-64 64-64 64 28.7 64 64-28.7 64-64 64z"/></svg></a>
+            <a href="#" class="facebook-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zm-143 0v-83h-41c-14 0-21 7-21 21v62h62l-10 62h-52v127h-62v-127h-52v-62h52v-44c0-43 26-67 65-67 18 0 33 2 37 2z"/></svg></a>
+            <a href="#" class="instagram-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8c-66.2 0-120 53.8-120 120v256c0 66.2 53.8 120 120 120h64c66.2 0 120-53.8 120-120V128c0-66.2-53.8-120-120-120H256zm0 40h64c44.1 0 80 35.9 80 80v256c0 44.1-35.9 80-80 80h-64c-44.1 0-80-35.9-80-80V128c0-44.1 35.9-80 80-80zM384 192v192c0 17.7-14.3 32-32 32s-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32zm-64-64c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32z"/></svg></a>
+          </div>
+        </div>
+
+        <div class="header-content">
+          <h1>Total Wealth Calculator & Planner</h1>
+        </div>
+      
+        <form id="planner-form">
+          <div class="inputs">
+              
+            <div class="investment-group">
+              <h2>SIPs</h2>
+              <div id="sip-inputs" class="input-section">
+                <div class="card sip-card">
+                  <div class="card-inputs">
+                    <div class="input-row">
+                      <label>Monthly SIP Amount</label>
+                      <div class="input-container">
+                        <input type="number" class="sip-amount" placeholder="Eg. 5000">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>SIP Frequency</label>
+                      <select class="sip-frequency">
+                        <option value="12">Monthly</option>
+                        <option value="4">Quarterly</option>
+                        <option value="1">Yearly</option>
+                      </select>
+                    </div>
+                    <div class="input-row">
+                      <label>SIP Tenure (years)</label>
+                      <div class="slider-container">
+                        <input type="range" min="1" max="40" value="10" step="1" class="sip-duration-slider">
+                        <input type="number" class="slider-value sip-duration-value" value="10" step="1">
+                      </div>
+                      <input type="hidden" class="sip-duration" value="10">
+                    </div>
+                    <div class="input-row">
+                      <label>Expected Rate of Return (p.a)</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="30" value="12" step="0.1" class="sip-rate-slider">
+                        <input type="number" class="slider-value sip-rate-value" value="12.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="sip-rate" value="12">
+                    </div>
+                  </div>
+                  <div class="card-display">
+                    <div class="chart-display">
+                      <canvas class="chart-canvas" id="sipChart-0"></canvas>
+                      <div class="chart-values">
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
+                            <span id="sip-invested-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                            <span id="sip-returns-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Total Value</span>
+                            <span id="sip-total-0">₹0</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addInvestment('sip', 5)">Add another SIP</button>
+            </div>
+            
+            <div class="investment-group">
+              <h2>Lumpsums</h2>
+              <div id="lumpsum-inputs" class="input-section">
+                <div class="card lumpsum-card">
+                  <div class="card-inputs">
+                    <div class="input-row">
+                      <label>Lumpsum Amount</label>
+                      <div class="input-container">
+                        <input type="number" class="lumpsum-amount" placeholder="Eg. 100000">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>Investment Tenure (years)</label>
+                      <div class="slider-container">
+                        <input type="range" min="1" max="40" value="10" step="1" class="lumpsum-duration-slider">
+                        <input type="number" class="slider-value lumpsum-duration-value" value="10" step="1">
+                      </div>
+                      <input type="hidden" class="lumpsum-duration" value="10">
+                    </div>
+                    <div class="input-row">
+                      <label>Expected Rate of Return (p.a)</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="30" value="12" step="0.1" class="lumpsum-rate-slider">
+                        <input type="number" class="slider-value lumpsum-rate-value" value="12.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="lumpsum-rate" value="12">
+                    </div>
+                  </div>
+                  <div class="card-display">
+                    <div class="chart-display">
+                      <canvas class="chart-canvas" id="lumpsumChart-0"></canvas>
+                      <div class="chart-values">
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
+                            <span id="lumpsum-invested-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                            <span id="lumpsum-returns-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Total Value</span>
+                            <span id="lumpsum-total-0">₹0</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addInvestment('lumpsum', 5)">Add another Lumpsum</button>
+            </div>
+            
+            <div class="investment-group">
+              <h2>Fixed Deposits</h2>
+              <div id="fd-inputs" class="input-section">
+                <div class="card fd-card">
+                  <div class="card-inputs">
+                    <div class="input-row">
+                      <label>FD Amount</label>
+                      <div class="input-container">
+                        <input type="number" class="fd-amount" placeholder="Eg. 50000">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>FD Tenure (years)</label>
+                      <div class="slider-container">
+                        <input type="range" min="1" max="20" value="5" step="1" class="fd-duration-slider">
+                        <input type="number" class="slider-value fd-duration-value" value="5" step="1">
+                      </div>
+                      <input type="hidden" class="fd-duration" value="5">
+                    </div>
+                    <div class="input-row">
+                      <label>Expected Rate of Return (p.a)</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="15" value="7" step="0.1" class="fd-rate-slider">
+                        <input type="number" class="slider-value fd-rate-value" value="7.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="fd-rate" value="7">
+                    </div>
+                  </div>
+                  <div class="card-display">
+                    <div class="chart-display">
+                      <canvas class="chart-canvas" id="fdChart-0"></canvas>
+                      <div class="chart-values">
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
+                            <span id="fd-invested-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                            <span id="fd-returns-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Total Value</span>
+                            <span id="fd-total-0">₹0</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addInvestment('fd', 5)">Add another FD</button>
+            </div>
+
+            <div class="investment-group">
+              <h2>Gold/Silver</h2>
+              <div id="gold-inputs" class="input-section">
+                <div class="card gold-card">
+                  <div class="card-inputs">
+                    <div class="input-row">
+                      <label>Investment Amount</label>
+                      <div class="input-container">
+                        <input type="number" class="gold-amount" placeholder="Eg. 25000">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>Tenure (years)</label>
+                      <div class="slider-container">
+                        <input type="range" min="1" max="40" value="10" step="1" class="gold-duration-slider">
+                        <input type="number" class="slider-value gold-duration-value" value="10" step="1">
+                      </div>
+                      <input type="hidden" class="gold-duration" value="10">
+                    </div>
+                    <div class="input-row">
+                      <label>Expected Rate of Return (p.a)</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="20" value="9" step="0.1" class="gold-rate-slider">
+                        <input type="number" class="slider-value gold-rate-value" value="9.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="gold-rate" value="9">
+                    </div>
+                  </div>
+                  <div class="card-display">
+                    <div class="chart-display">
+                      <canvas class="chart-canvas" id="goldChart-0"></canvas>
+                      <div class="chart-values">
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
+                            <span id="gold-invested-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                            <span id="gold-returns-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Total Value</span>
+                            <span id="gold-total-0">₹0</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="add-btn" onclick="addInvestment('gold', 5)">Add another Gold/Silver</button>
+            </div>
+            
+            <div class="investment-group">
+              <h2>NPS</h2>
+              <div id="nps-inputs" class="input-section">
+                <div class="card nps-card">
+                  <div class="card-inputs">
+                    <div class="input-row">
+                      <label>Current Age</label>
+                      <div class="input-container">
+                        <input type="number" class="nps-current-age" placeholder="Eg. 25">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>Monthly Contribution</label>
+                      <div class="input-container">
+                        <input type="number" class="nps-contribution-amount" placeholder="Eg. 5000">
+                      </div>
+                    </div>
+                    <div class="input-row">
+                      <label>Return % p.a.</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="20" value="10" step="0.1" class="nps-rate-slider">
+                        <input type="number" class="slider-value nps-rate-value" value="10.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="nps-rate" value="10">
+                    </div>
+                    <div class="input-row">
+                      <label>Annuity % (40-100%)</label>
+                      <div class="slider-container">
+                        <input type="range" min="40" max="100" value="60" step="1" class="nps-annuity-percent-slider">
+                        <input type="number" class="slider-value nps-annuity-percent-value" value="60" step="1">
+                      </div>
+                      <input type="hidden" class="nps-annuity-percent" value="60">
+                    </div>
+                    <div class="input-row">
+                      <label>Expected Annuity Rate %</label>
+                      <div class="slider-container">
+                        <input type="range" min="0" max="15" value="6" step="0.1" class="nps-annuity-rate-slider">
+                        <input type="number" class="slider-value nps-annuity-rate-value" value="6.0" step="0.1">
+                      </div>
+                      <input type="hidden" class="nps-annuity-rate" value="6">
+                    </div>
+                  </div>
+                  <div class="card-display">
+                    <div class="chart-display">
+                      <canvas class="chart-canvas" id="npsChart-0"></canvas>
+                      <div class="chart-values">
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
+                            <span id="nps-invested-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                            <span id="nps-returns-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Total Value</span>
+                            <span id="nps-total-0">₹0</span>
+                          </div>
+                          <div class="value-row">
+                            <span>Monthly Pension</span>
+                            <span id="nps-pension-0">₹0</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ad-placement">
+              Google AdSense Horizontal Placeholder (1)
+          </div>
+          <button type="button" id="calculate-btn">Estimate Total Wealth</button>
+        </form>
+        
+        <div id="inflation-section">
+          <label class="inflation-toggle">
+            <input type="checkbox" id="inflation-toggle-btn">
+            Adjust for Inflation?
+          </label>
+          <label>Inflation Rate (% p.a.)</label>
+          <input type="number" id="inflation-rate" value="6" step="0.1">
+        </div>
+
+        <div id="total-wealth-summary">
+          <h3>Total Wealth (Nominal): <span id="total-wealth-value">₹0</span></h3>
+          <h3>Total Wealth (Adjusted for Inflation): <span id="total-wealth-value-adjusted">₹0</span></h3>
+        </div>
+        
+        <div class="exports">
+          <button type="button" id="download-csv">Export CSV</button>
+        </div>
+
+        <div class="ad-placement">
+          Google AdSense Horizontal Placeholder (2)
+        </div>
+
+        <div class="chart-controls">
+          <label for="chart-view">View:</label>
+          <select id="chart-view">
+            <option value="yearly">Yearly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <button type="button" id="export-chart">Export Chart Image</button>
+        </div>
+        
+        <div class="charts">
+          <div class="chart-container"><canvas id="pieChart"></canvas></div>
+          <div class="chart-container"><canvas id="lineChart"></canvas></div>
+        </div>
+        
+        <hr>
+
+        <div class="faq-section">
+          <h2>Frequently Asked Questions</h2>
+          <div class="faq-item">
+            <h3>What is a Systematic Investment Plan (SIP)?</h3>
+            <p>A SIP is a method of investing in mutual funds where a fixed amount is invested at regular intervals (e.g., monthly). This approach helps average out the cost of investment over time and is a disciplined way to build wealth.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is a Lumpsum Investment?</h3>
+            <p>A lumpsum investment is a one-time, large investment in a financial instrument, such as a mutual fund or stock. Unlike a SIP, the entire amount is invested at once, and its performance is more dependent on the market conditions at the time of investment.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is a Fixed Deposit (FD)?</h3>
+            <p>A Fixed Deposit is a financial instrument offered by banks where you deposit a sum of money for a fixed period at a predetermined interest rate. It is considered a safe and low-risk investment that guarantees returns but offers lower growth potential compared to market-linked investments.</p>
+          </div>
+          <div class="faq-item">
+            <h3>What about Gold/Silver as an Investment?</h3>
+            <p>Gold and silver are often considered safe-haven assets. Their value typically moves inversely to equity markets, making them a good hedge against inflation and economic uncertainty. You can invest in them physically (coins, bars, jewelry) or digitally (Sovereign Gold Bonds, Gold ETFs).</p>
+          </div>
+          <div class="faq-item">
+            <h3>What is the National Pension System (NPS)?</h3>
+            <p>NPS is a voluntary, long-term retirement-focused investment scheme. It is designed to provide a secure and flexible retirement solution. Contributions are invested in a mix of equity and debt, and a portion of the final corpus must be used to purchase an annuity for a monthly pension.</p>
+          </div>
+        </div>
+
+        <div class="disclaimer-section">
+          <h3>Disclaimer</h3>
+          <p>This Total Wealth Calculator and Planner is intended for educational and informational purposes only. The results are based on user-provided inputs and are estimates, not guaranteed returns. The actual performance of any investment can vary significantly. Investing in financial markets is subject to risk, and you should always consult with a qualified financial advisor before making any investment decisions. This tool does not constitute financial advice, and the creators are not liable for any financial outcomes based on its use.</p>
+        </div>
+        <div class="ad-placement">
+          Google AdSense Horizontal Placeholder (3)
+        </div>
+    </div>
+    
+    <div class="ad-sidebar">
+      <div class="ad-placement vertical">
+        Google AdSense Vertical Placeholder (4)
+      </div>
+      <div class="ad-placement vertical">
+        Google AdSense Second Vertical Placeholder (5)
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const COLORS = ['#5470C6','#91CC75','#EE6666','#FAC858', '#73c0de', '#9A60B4', '#EA7CCC'];
+    let pieChartInstance = null, lineChartInstance = null;
+    const miniChartInstances = {};
+    let sipCounter = 1, lumpsumCounter = 1, fdCounter = 1, goldCounter = 1;
+    
+    const getNum = (selector, parent = document) => {
+        const input = parent.querySelector(selector);
+        return parseFloat(input.value) || parseFloat(input.placeholder) || 0;
+    }
+    const comp = (p, r, y) => p * Math.pow(1 + r/100, y);
+    const sipCalc = (a, r, y, freq) => {
+      const periods = y * freq;
+      const rate = (r/100) / freq;
+      if (rate === 0) return a * periods;
+      return a * ((Math.pow(1 + rate, periods) - 1) / rate) * (1 + rate);
+    };
+    const npsCalc = (currentAge, monthlyContribution, returnRate, annuityPercent, annuityRate) => {
+        const retirementAge = 60;
+        const yearsToRetirement = retirementAge - currentAge;
+        if (yearsToRetirement <= 0) {
+            return { corpus: 0, lumpSum: 0, monthlyPension: 0, yearsToRetirement: 0, investedAmount: 0 };
+        }
+        const monthlyRate = (returnRate / 100) / 12;
+        const totalMonths = yearsToRetirement * 12;
+        let corpus = 0;
+        for (let i = 0; i < totalMonths; i++) {
+            corpus = corpus * (1 + monthlyRate) + monthlyContribution;
+        }
+        const lumpSumPercent = (100 - annuityPercent) / 100;
+        const annuityCorpus = corpus * (annuityPercent / 100);
+        const lumpSum = corpus * lumpSumPercent;
+        const monthlyPension = (annuityCorpus * (annuityRate / 100)) / 12;
+        const investedAmount = monthlyContribution * totalMonths;
+        return { corpus, lumpSum, monthlyPension, yearsToRetirement, investedAmount };
+    };
+
+    const templates = {
+      sip: (index) => `
+        <div class="card sip-card">
+          <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+          <div class="card-inputs">
+            <div class="input-row">
+              <label>SIP Amount</label>
+              <div class="input-container">
+                <input type="number" class="sip-amount" placeholder="Eg. 5000">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>SIP Frequency</label>
+              <select class="sip-frequency">
+                <option value="12">Monthly</option>
+                <option value="4">Quarterly</option>
+                <option value="1">Yearly</option>
+              </select>
+            </div>
+            <div class="input-row">
+              <label>SIP Tenure (years)</label>
+              <div class="slider-container">
+                <input type="range" min="1" max="40" value="10" step="1" class="sip-duration-slider">
+                <input type="number" class="slider-value sip-duration-value" value="10" step="1">
+              </div>
+              <input type="hidden" class="sip-duration" value="10">
+            </div>
+            <div class="input-row">
+              <label>Expected Rate of Return (p.a)</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="30" value="12" step="0.1" class="sip-rate-slider">
+                <input type="number" class="slider-value sip-rate-value" value="12.0" step="0.1">
+              </div>
+              <input type="hidden" class="sip-rate" value="12">
+            </div>
+          </div>
+          <div class="card-display">
+            <div class="chart-display">
+              <canvas class="chart-canvas" id="sipChart-${index}"></canvas>
+              <div class="chart-values">
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
+                    <span id="sip-invested-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                    <span id="sip-returns-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Total Value</span>
+                    <span id="sip-total-${index}">₹0</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      lumpsum: (index) => `
+        <div class="card lumpsum-card">
+          <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+          <div class="card-inputs">
+            <div class="input-row">
+              <label>Lumpsum Amount</label>
+              <div class="input-container">
+                <input type="number" class="lumpsum-amount" placeholder="Eg. 100000">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>Investment Tenure (years)</label>
+              <div class="slider-container">
+                <input type="range" min="1" max="40" value="10" step="1" class="lumpsum-duration-slider">
+                <input type="number" class="slider-value lumpsum-duration-value" value="10" step="1">
+              </div>
+              <input type="hidden" class="lumpsum-duration" value="10">
+            </div>
+            <div class="input-row">
+              <label>Expected Rate of Return (p.a)</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="30" value="12" step="0.1" class="lumpsum-rate-slider">
+                <input type="number" class="slider-value lumpsum-rate-value" value="12.0" step="0.1">
+              </div>
+              <input type="hidden" class="lumpsum-rate" value="12">
+            </div>
+          </div>
+          <div class="card-display">
+            <div class="chart-display">
+              <canvas class="chart-canvas" id="lumpsumChart-${index}"></canvas>
+              <div class="chart-values">
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
+                    <span id="lumpsum-invested-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                    <span id="lumpsum-returns-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Total Value</span>
+                    <span id="lumpsum-total-${index}">₹0</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      fd: (index) => `
+        <div class="card fd-card">
+          <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+          <div class="card-inputs">
+            <div class="input-row">
+              <label>FD Amount</label>
+              <div class="input-container">
+                <input type="number" class="fd-amount" placeholder="Eg. 50000">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>FD Tenure (years)</label>
+              <div class="slider-container">
+                <input type="range" min="1" max="20" value="5" step="1" class="fd-duration-slider">
+                <input type="number" class="slider-value fd-duration-value" value="5" step="1">
+              </div>
+              <input type="hidden" class="fd-duration" value="5">
+            </div>
+            <div class="input-row">
+              <label>Expected Rate of Return (p.a)</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="15" value="7" step="0.1" class="fd-rate-slider">
+                <input type="number" class="slider-value fd-rate-value" value="7.0" step="0.1">
+              </div>
+              <input type="hidden" class="fd-rate" value="7">
+            </div>
+          </div>
+          <div class="card-display">
+            <div class="chart-display">
+              <canvas class="chart-canvas" id="fdChart-${index}"></canvas>
+              <div class="chart-values">
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
+                    <span id="fd-invested-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                    <span id="fd-returns-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Total Value</span>
+                    <span id="fd-total-${index}">₹0</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      gold: (index) => `
+        <div class="card gold-card">
+          <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+          <div class="card-inputs">
+            <div class="input-row">
+              <label>Investment Amount</label>
+              <div class="input-container">
+                <input type="number" class="gold-amount" placeholder="Eg. 25000">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>Tenure (years)</label>
+              <div class="slider-container">
+                <input type="range" min="1" max="40" value="10" step="1" class="gold-duration-slider">
+                <input type="number" class="slider-value gold-duration-value" value="10" step="1">
+              </div>
+              <input type="hidden" class="gold-duration" value="10">
+            </div>
+            <div class="input-row">
+              <label>Expected Rate of Return (p.a)</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="20" value="9" step="0.1" class="gold-rate-slider">
+                <input type="number" class="slider-value gold-rate-value" value="9.0" step="0.1">
+              </div>
+              <input type="hidden" class="gold-rate" value="9">
+            </div>
+          </div>
+          <div class="card-display">
+            <div class="chart-display">
+              <canvas class="chart-canvas" id="goldChart-${index}"></canvas>
+              <div class="chart-values">
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
+                    <span id="gold-invested-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                    <span id="gold-returns-${index}">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Total Value</span>
+                    <span id="gold-total-${index}">₹0</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      nps: (index) => `
+        <div class="card nps-card">
+          <div class="card-inputs">
+            <div class="input-row">
+              <label>Current Age</label>
+              <div class="input-container">
+                <input type="number" class="nps-current-age" placeholder="Eg. 25">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>Monthly Contribution</label>
+              <div class="input-container">
+                <input type="number" class="nps-contribution-amount" placeholder="Eg. 5000">
+              </div>
+            </div>
+            <div class="input-row">
+              <label>Return % p.a.</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="20" value="10" step="0.1" class="nps-rate-slider">
+                <input type="number" class="slider-value nps-rate-value" value="10.0" step="0.1">
+              </div>
+              <input type="hidden" class="nps-rate" value="10">
+            </div>
+            <div class="input-row">
+              <label>Annuity % (40-100%)</label>
+              <div class="slider-container">
+                <input type="range" min="40" max="100" value="60" step="1" class="nps-annuity-percent-slider">
+                <input type="number" class="slider-value nps-annuity-percent-value" value="60" step="1">
+              </div>
+              <input type="hidden" class="nps-annuity-percent" value="60">
+            </div>
+            <div class="input-row">
+              <label>Expected Annuity Rate %</label>
+              <div class="slider-container">
+                <input type="range" min="0" max="15" value="6" step="0.1" class="nps-annuity-rate-slider">
+                <input type="number" class="slider-value nps-annuity-rate-value" value="6.0" step="0.1">
+              </div>
+              <input type="hidden" class="nps-annuity-rate" value="6">
+            </div>
+          </div>
+          <div class="card-display">
+            <div class="chart-display">
+              <canvas class="chart-canvas" id="npsChart-0"></canvas>
+              <div class="chart-values">
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
+                    <span id="nps-invested-0">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                    <span id="nps-returns-0">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Total Value</span>
+                    <span id="nps-total-0">₹0</span>
+                  </div>
+                  <div class="value-row">
+                    <span>Monthly Pension</span>
+                    <span id="nps-pension-0">₹0</span>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+    };
+
+    function addSliderListeners(card, type, index) {
+        card.querySelectorAll('input[type="range"]').forEach(slider => {
+            const valueInput = card.querySelector(`.${slider.className.replace('-slider', '-value')}`);
+            const hiddenInput = card.querySelector(`.${slider.className.replace('-slider', '')}`);
+
+            const updateValues = () => {
+                valueInput.value = slider.value;
+                hiddenInput.value = slider.value;
+                updateMiniChart(type, index, card);
+            };
+
+            const updateFromInput = () => {
+                const val = parseFloat(valueInput.value);
+                if (!isNaN(val) && val >= parseFloat(slider.min) && val <= parseFloat(slider.max)) {
+                    slider.value = val;
+                    hiddenInput.value = val;
+                    updateMiniChart(type, index, card);
+                }
+            };
+            
+            slider.addEventListener('input', updateValues);
+            valueInput.addEventListener('input', updateFromInput);
+        });
+
+        card.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', () => updateMiniChart(type, index, card));
+        });
+
+        updateMiniChart(type, index, card);
+    }
+    
+    function updateMiniChart(type, index, card) {
+        const investedAmountId = `${type}-invested-${index}`;
+        const returnsAmountId = `${type}-returns-${index}`;
+        const totalValueId = `${type}-total-${index}`;
+        const pensionId = `${type}-pension-${index}`;
+        const chartId = `${type}Chart-${index}`;
+        const color = COLORS[Object.keys(templates).indexOf(type)];
+
+        let invested = 0;
+        let result = 0;
+        let tenure = 0;
+
+        if (type === 'sip') {
+            const sipAmt = getNum('.sip-amount', card);
+            const sipRate = getNum('.sip-rate', card);
+            const sipY = getNum('.sip-duration', card);
+            const sipFreq = getNum('.sip-frequency', card);
+            invested = sipAmt * sipY * sipFreq;
+            result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
+            tenure = sipY;
+        } else if (type === 'lumpsum') {
+            const lsAmt = getNum('.lumpsum-amount', card);
+            const lsRate = getNum('.lumpsum-rate', card);
+            const lsY = getNum('.lumpsum-duration', card);
+            invested = lsAmt;
+            result = comp(lsAmt, lsRate, lsY);
+            tenure = lsY;
+        } else if (type === 'fd') {
+            const fdAmt = getNum('.fd-amount', card);
+            const fdRate = getNum('.fd-rate', card);
+            const fdY = getNum('.fd-duration', card);
+            invested = fdAmt;
+            result = comp(fdAmt, fdRate, fdY);
+            tenure = fdY;
+        } else if (type === 'gold') {
+            const goldAmt = getNum('.gold-amount', card);
+            const goldRate = getNum('.gold-rate', card);
+            const goldY = getNum('.gold-duration', card);
+            invested = goldAmt;
+            result = comp(goldAmt, goldRate, goldY);
+            tenure = goldY;
+        } else if (type === 'nps') {
+            const currentAge = getNum('.nps-current-age', card);
+            const contributionAmt = getNum('.nps-contribution-amount', card);
+            const returnRate = getNum('.nps-rate', card);
+            const annuityPercent = getNum('.nps-annuity-percent', card);
+            const annuityRate = getNum('.nps-annuity-rate', card);
+            const npsResult = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
+            invested = npsResult.investedAmount;
+            result = npsResult.corpus;
+            tenure = npsResult.yearsToRetirement;
+            document.getElementById(pensionId).textContent = `₹${npsResult.monthlyPension.toFixed(0)}`;
+        }
+        
+        const returns = result - invested;
+        
+        document.getElementById(investedAmountId).textContent = `₹${invested.toFixed(0)}`;
+        document.getElementById(returnsAmountId).textContent = `₹${Math.max(0, returns).toFixed(0)}`;
+        document.getElementById(totalValueId).textContent = `₹${result.toFixed(0)}`;
+
+        if (miniChartInstances[chartId]) {
+            miniChartInstances[chartId].destroy();
+        }
+
+        miniChartInstances[chartId] = new Chart(document.getElementById(chartId), {
+            type: 'doughnut',
+            data: {
+              labels: ['Invested', 'Return'],
+              datasets: [{
+                  data: [invested, Math.max(0, returns)],
+                  backgroundColor: [color, 'rgba(211, 211, 211, 0.5)'],
+                  borderWidth: 0
+              }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                      callbacks: {
+                        label: function(context) {
+                          const value = context.parsed;
+                          const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                          const percentage = ((value / total) * 100).toFixed(1) + '%';
+                          const label = context.label;
+                          return `${label}: ${percentage}`;
+                        }
+                      }
+                    }
+                },
+                cutout: '70%',
+            }
+        });
+    }
+
+    function addInvestment(type, limit) {
+      const container = document.getElementById(`${type}-inputs`);
+      const index = (type === 'sip' ? sipCounter++ : type === 'lumpsum' ? lumpsumCounter++ : type === 'fd' ? fdCounter++ : goldCounter++);
+      if (container.children.length < limit) {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = templates[type](index).trim();
+        const card = tempDiv.firstChild;
+        container.appendChild(card);
+        addSliderListeners(card, type, index);
+      } else {
+        alert(`You can add a maximum of ${limit} ${type} investments.`);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const sipCard = document.querySelector('.sip-card');
+        addSliderListeners(sipCard, 'sip', 0);
+        const lumpsumCard = document.querySelector('.lumpsum-card');
+        addSliderListeners(lumpsumCard, 'lumpsum', 0);
+        const fdCard = document.querySelector('.fd-card');
+        addSliderListeners(fdCard, 'fd', 0);
+        const goldCard = document.querySelector('.gold-card');
+        addSliderListeners(goldCard, 'gold', 0);
+        const npsCard = document.querySelector('.nps-card');
+        addSliderListeners(npsCard, 'nps', 0);
+        
+        document.getElementById('share-button').onclick = toggleShareIcons;
+        setupShareLinks();
+        
+        // Initial calculation on load
+        draw();
+    });
+    
+    // Add event listener to re-draw charts when the user returns to the page
+    window.addEventListener('focus', () => {
+      // Re-draw all charts if they are not already drawn
+      if (pieChartInstance && lineChartInstance) return;
+      draw();
+    });
+
+    function draw() {
+      const view = document.getElementById('chart-view').value;
+      const allSips = document.querySelectorAll('.sip-card');
+      const allLumpsums = document.querySelectorAll('.lumpsum-card');
+      const allFds = document.querySelectorAll('.fd-card');
+      const allGold = document.querySelectorAll('.gold-card');
+      const allNps = document.querySelectorAll('.nps-card');
+      
+      const inflationToggle = document.getElementById('inflation-toggle-btn').checked;
+      const inflationRate = inflationToggle ? getNum('#inflation-rate') : 0;
+      
+      let allInvestmentResults = { sip: [], lumpsum: [], fd: [], gold: [], nps: [] };
+      let totalWealth = 0;
+      let totalWealthAdjusted = 0;
+      let maxY = 0;
+      
+      allSips.forEach(card => {
+          const sipAmt = getNum('.sip-amount', card);
+          const sipRate = getNum('.sip-rate', card);
+          const sipY = getNum('.sip-duration', card);
+          const sipFreq = getNum('.sip-frequency', card);
+          const result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
+          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, sipY);
+          allInvestmentResults.sip.push({ amount: sipAmt, rate: sipRate, duration: sipY, result, resultAdjusted, frequency: sipFreq });
+          totalWealth += result;
+          totalWealthAdjusted += resultAdjusted;
+          if (sipY > maxY) maxY = sipY;
+      });
+      allLumpsums.forEach(card => {
+          const lsAmt = getNum('.lumpsum-amount', card);
+          const lsRate = getNum('.lumpsum-rate', card);
+          const lsY = getNum('.lumpsum-duration', card);
+          const result = comp(lsAmt, lsRate, lsY);
+          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, lsY);
+          allInvestmentResults.lumpsum.push({ amount: lsAmt, rate: lsRate, duration: lsY, result, resultAdjusted });
+          totalWealth += result;
+          totalWealthAdjusted += resultAdjusted;
+          if (lsY > maxY) maxY = lsY;
+      });
+      allFds.forEach(card => {
+          const fdAmt = getNum('.fd-amount', card);
+          const fdRate = getNum('.fd-rate', card);
+          const fdY = getNum('.fd-duration', card);
+          const result = comp(fdAmt, fdRate, fdY);
+          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, fdY);
+          allInvestmentResults.fd.push({ amount: fdAmt, rate: fdRate, duration: fdY, result, resultAdjusted });
+          totalWealth += result;
+          totalWealthAdjusted += resultAdjusted;
+          if (fdY > maxY) maxY = fdY;
+      });
+      allGold.forEach(card => {
+          const goldAmt = getNum('.gold-amount', card);
+          const goldRate = getNum('.gold-rate', card);
+          const goldY = getNum('.gold-duration', card);
+          const result = comp(goldAmt, goldRate, goldY);
+          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, goldY);
+          allInvestmentResults.gold.push({ amount: goldAmt, rate: goldRate, duration: goldY, result, resultAdjusted });
+          totalWealth += result;
+          totalWealthAdjusted += resultAdjusted;
+          if (goldY > maxY) maxY = goldY;
+      });
+      allNps.forEach(card => {
+          const currentAge = getNum('.nps-current-age', card);
+          const contributionAmt = getNum('.nps-contribution-amount', card);
+          const returnRate = getNum('.nps-rate', card);
+          const annuityPercent = getNum('.nps-annuity-percent', card);
+          const annuityRate = getNum('.nps-annuity-rate', card);
+          const result = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
+          const resultAdjusted = result.corpus / Math.pow(1 + inflationRate / 100, result.yearsToRetirement);
+          allInvestmentResults.nps.push({ ...result, resultAdjusted, contribution: contributionAmt, returnRate, currentAge });
+          totalWealth += result.corpus;
+          totalWealthAdjusted += resultAdjusted;
+          if (result.yearsToRetirement > maxY) maxY = result.yearsToRetirement;
+      });
+      
+      document.getElementById('total-wealth-value').textContent = `₹${totalWealth.toFixed(2)}`;
+      document.getElementById('total-wealth-value-adjusted').textContent = `₹${totalWealthAdjusted.toFixed(2)}`;
+
+      const labels = view === 'monthly' ? Array.from({length: maxY * 12 + 1}, (_, i) => `M${i}`) : Array.from({length: maxY + 1}, (_, i) => `Y${i}`);
+      const timeline = view === 'monthly' ? labels.map((_, i) => i / 12) : labels.map((_, i) => i);
+      
+      const chartLabels = ['SIPs', 'Lumpsums', 'Fixed Deposits', 'Gold/Silver', 'NPS'];
+      const chartData = [
+          allInvestmentResults.sip.reduce((sum, current) => sum + current.result, 0),
+          allInvestmentResults.lumpsum.reduce((sum, current) => sum + current.result, 0),
+          allInvestmentResults.fd.reduce((sum, current) => sum + current.result, 0),
+          allInvestmentResults.gold.reduce((sum, current) => sum + current.result, 0),
+          allInvestmentResults.nps.reduce((sum, current) => sum + current.corpus, 0)
+      ];
+      const chartColors = COLORS.slice(0, chartLabels.length);
+
+      const lineChartDatasets = [
+        { label: 'SIPs', data: timeline.map(t => allInvestmentResults.sip.reduce((sum, inv) => {
+            const yearsToCalc = Math.min(t, inv.duration);
+            return sum + sipCalc(inv.amount, inv.rate, yearsToCalc, inv.frequency);
+        }, 0)), borderColor: COLORS[0], fill: false },
+        { label: 'Lumpsums', data: timeline.map(t => allInvestmentResults.lumpsum.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[1], fill: false },
+        { label: 'Fixed Deposits', data: timeline.map(t => allInvestmentResults.fd.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[2], fill: false },
+        { label: 'Gold/Silver', data: timeline.map(t => allInvestmentResults.gold.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[3], fill: false },
+        { label: 'NPS', data: timeline.map(t => allInvestmentResults.nps.reduce((sum, inv) => {
+            const yearsToRetirement = 60 - inv.currentAge;
+            const yearsToCalc = Math.min(t, yearsToRetirement);
+            const monthlyRate = (inv.returnRate / 100) / 12;
+            const totalMonths = Math.floor(yearsToCalc * 12);
+            let val = 0;
+            for (let i = 0; i < totalMonths; i++) {
+                val = val * (1 + monthlyRate) + inv.contribution;
+            }
+            return sum + val;
+        }, 0)), borderColor: COLORS[4], fill: false }
+      ];
+      
+      if (pieChartInstance) pieChartInstance.destroy();
+      if (lineChartInstance) lineChartInstance.destroy();
+      
+      pieChartInstance = new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+          labels: chartLabels,
+          datasets: [{ data: chartData, backgroundColor: chartColors }]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+      
+      lineChartInstance = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: { labels, datasets: lineChartDatasets },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    document.getElementById('calculate-btn').onclick = draw;
+    document.getElementById('chart-view').onchange = draw;
+    document.getElementById('export-chart').onclick = () => {
+      if (!lineChartInstance) return;
+      const link = document.createElement('a');
+      link.href = lineChartInstance.toBase64Image();
+      link.download = 'growth_chart.png';
+      link.click();
+    };
+
+    document.getElementById('download-csv').onclick = () => {
+        const allSips = document.querySelectorAll('.sip-card');
+        const allLumpsums = document.querySelectorAll('.lumpsum-card');
+        const allFds = document.querySelectorAll('.fd-card');
+        const allGold = document.querySelectorAll('.gold-card');
+        const allNps = document.querySelectorAll('.nps-card');
+
+        const allSipData = Array.from(allSips).map(card => ({
+            amount: getNum('.sip-amount', card),
+            rate: getNum('.sip-rate', card),
+            duration: getNum('.sip-duration', card),
+            frequency: getNum('.sip-frequency', card)
+        }));
+        const allLumpsumData = Array.from(allLumpsums).map(card => ({
+            amount: getNum('.lumpsum-amount', card),
+            rate: getNum('.lumpsum-rate', card),
+            duration: getNum('.lumpsum-duration', card)
+        }));
+        const allFdData = Array.from(allFds).map(card => ({
+            amount: getNum('.fd-amount', card),
+            rate: getNum('.fd-rate', card),
+            duration: getNum('.fd-duration', card)
+        }));
+        const allGoldData = Array.from(allGold).map(card => ({
+            amount: getNum('.gold-amount', card),
+            rate: getNum('.gold-rate', card),
+            duration: getNum('.gold-duration', card)
+        }));
+        const allNpsData = Array.from(allNps).map(card => ({
+            currentAge: getNum('.nps-current-age', card),
+            contribution: getNum('.nps-contribution-amount', card),
+            rate: getNum('.nps-rate', card),
+            annuityPercent: getNum('.nps-annuity-percent', card),
+            annuityRate: getNum('.nps-annuity-rate', card),
+            duration: 60 - getNum('.nps-current-age', card)
+        }));
+
+        let maxDuration = 0;
+        allSipData.forEach(s => { if (s.duration > maxDuration) maxDuration = s.duration; });
+        allLumpsumData.forEach(l => { if (l.duration > maxDuration) maxDuration = l.duration; });
+        allFdData.forEach(f => { if (f.duration > maxDuration) maxDuration = f.duration; });
+        allGoldData.forEach(g => { if (g.duration > maxDuration) maxDuration = g.duration; });
+        allNpsData.forEach(n => { if (n.duration > maxDuration) maxDuration = n.duration; });
+
+        maxDuration = Math.min(maxDuration, 50) * 12;
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        
+        csvContent += "Investment Details\n";
+        allSipData.forEach((s, i) => csvContent += `SIP ${i+1},Amount: ₹${s.amount}, Frequency: ${s.frequency==12?'Monthly':s.frequency==4?'Quarterly':'Yearly'}, Rate: ${s.rate}% p.a., Duration: ${s.duration} years\n`);
+        allLumpsumData.forEach((l, i) => csvContent += `Lumpsum ${i+1},Amount: ₹${l.amount}, Rate: ${l.rate}% p.a., Duration: ${l.duration} years\n`);
+        allFdData.forEach((f, i) => csvContent += `Fixed Deposit ${i+1},Amount: ₹${f.amount}, Rate: ${f.rate}% p.a., Duration: ${f.duration} years\n`);
+        allGoldData.forEach((g, i) => csvContent += `Gold/Silver ${i+1},Amount: ₹${g.amount}, Rate: ${g.rate}% p.a., Duration: ${g.duration} years\n`);
+        allNpsData.forEach((n, i) => csvContent += `NPS ${i+1},Monthly Contribution: ₹${n.contribution}, Rate: ${n.rate}% p.a., Years to Retirement: ${n.duration}\n`);
+        csvContent += "\n";
+
+        const headerRow = ["Month", "Year"];
+        for(let i=0; i<allSipData.length; i++) headerRow.push(`SIP ${i+1}`);
+        for(let i=0; i<allLumpsumData.length; i++) headerRow.push(`Lumpsum ${i+1}`);
+        for(let i=0; i<allFdData.length; i++) headerRow.push(`Fixed Deposit ${i+1}`);
+        for(let i=0; i<allGoldData.length; i++) headerRow.push(`Gold/Silver ${i+1}`);
+        for(let i=0; i<allNpsData.length; i++) headerRow.push(`NPS ${i+1}`);
+        headerRow.push("Total Wealth");
+        csvContent += headerRow.join(',') + "\n";
+
+        let currentValues = { sip: Array(allSipData.length).fill(0), lumpsum: [...allLumpsumData.map(l => l.amount)], fd: [...allFdData.map(f => f.amount)], gold: [...allGoldData.map(g => g.amount)], nps: Array(allNpsData.length).fill(0) };
+
+        for (let i = 1; i <= maxDuration; i++) {
+            const year = Math.ceil(i / 12);
+            let row = [`${i}`, `${year}`];
+            let totalWealth = 0;
+
+            allSipData.forEach((s, idx) => {
+                const monthlyRate = (s.rate / 100) / 12;
+                if (i <= s.duration * 12) {
+                    currentValues.sip[idx] = currentValues.sip[idx] * (1 + monthlyRate) + (i % (12 / s.frequency) === 0 ? s.amount : 0);
+                } else {
+                    currentValues.sip[idx] = currentValues.sip[idx] * (1 + monthlyRate);
+                }
+                row.push(currentValues.sip[idx].toFixed(2));
+                totalWealth += currentValues.sip[idx];
+            });
+            allLumpsumData.forEach((l, idx) => {
+                if (i <= l.duration * 12) {
+                    const monthlyRate = (l.rate / 100) / 12;
+                    currentValues.lumpsum[idx] = currentValues.lumpsum[idx] * (1 + monthlyRate);
+                }
+                row.push(currentValues.lumpsum[idx].toFixed(2));
+                totalWealth += currentValues.lumpsum[idx];
+            });
+            allFdData.forEach((f, idx) => {
+                if (i <= f.duration * 12) {
+                    const monthlyRate = (f.rate / 100) / 12;
+                    currentValues.fd[idx] = currentValues.fd[idx] * (1 + monthlyRate);
+                }
+                row.push(currentValues.fd[idx].toFixed(2));
+                totalWealth += currentValues.fd[idx];
+            });
+            allGoldData.forEach((g, idx) => {
+                if (i <= g.duration * 12) {
+                    const monthlyRate = (g.rate / 100) / 12;
+                    currentValues.gold[idx] = currentValues.gold[idx] * (1 + monthlyRate);
+                }
+                row.push(currentValues.gold[idx].toFixed(2));
+                totalWealth += currentValues.gold[idx];
+            });
+            allNpsData.forEach((n, idx) => {
+                const yearsToRetirement = 60 - n.currentAge;
+                if (i <= yearsToRetirement * 12) {
+                    const monthlyRate = (n.rate / 100) / 12;
+                    currentValues.nps[idx] = currentValues.nps[idx] * (1 + monthlyRate) + n.contribution;
+                }
+                row.push(currentValues.nps[idx].toFixed(2));
+                totalWealth += currentValues.nps[idx];
+            });
+
+            row.push(totalWealth.toFixed(2));
+            csvContent += row.join(',') + "\n";
+        }
+        
+        const link = document.createElement('a');
+        link.href = encodeURI(csvContent);
+        link.download = 'wealth_breakdown.csv';
+        link.click();
+    };
+
+    function toggleShareIcons() {
+      const shareIcons = document.querySelector('.share-icons');
+      shareIcons.classList.toggle('active');
+    }
+
+    function setupShareLinks() {
+        const pageUrl = window.location.href;
+        const pageTitle = "Total Wealth Calculator & Planner";
+        const shareText = "Check out this free Total Wealth Calculator & Planner! It helps you estimate your future wealth by combining SIPs, Lumpsums, FDs, and NPS. #FinancialPlanning #WealthCalculator";
+
+        document.querySelector('.x-share').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}`;
+        document.querySelector('.whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
+        document.querySelector('.gmail-share').href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
+        document.querySelector('.facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+        document.querySelector('.instagram-share').href = `https://www.instagram.com/share?url=${encodeURIComponent(pageUrl)}`;
+    }
+  </script>
+</body>
+</html>
