@@ -2,31 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Total Wealth Calculator & Planner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Total Wealth Calculator & Planner - Plan Your Financial Future</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="A comprehensive financial calculator and planner to help you estimate your total wealth. Calculate SIP, Lumpsum, Fixed Deposits, Gold, and NPS investments to plan for your financial future.">
+  <meta name="keywords" content="wealth calculator, financial planner, SIP calculator, lumpsum calculator, FD calculator, NPS planner, investment tool, personal finance, financial independence, retirement planner">
+  <meta name="author" content="Your Name or Website Name">
+  
+  <!-- Open Graph / Social Media Tags -->
+  <meta property="og:title" content="Total Wealth Calculator & Planner">
+  <meta property="og:description" content="A powerful tool to plan and visualize your total wealth across multiple investment types like SIP, Lumpsum, FD, Gold, and NPS.">
+  <meta property="og:url" content="https://yourwebsite.com/index.html">
+  <meta property="og:type" content="website">
+
+  <!-- Security Meta Tags (Retained) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; connect-src 'self'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com;">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta name="Referrer-Policy" content="no-referrer">
   <meta name="X-XSS-Protection" content="1; mode=block">
   <meta name="color-scheme" content="light">
-  
+
+  <!-- Google Font: Roboto -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   
+  <!-- Chart.js CDN for visualizations -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-  
+
   <style>
     /* Global & Professional Typography */
-    body { 
-      font-family: 'Roboto', sans-serif; 
-      background: #f8f9fa; 
-      color: #343a40; 
-      margin: 0; 
-      padding: 1.5rem; 
-      display: flex;
-      justify-content: center;
-      line-height: 1.6;
+    body {
+       font-family: 'Roboto', sans-serif;
+       background: #f8f9fa;
+       color: #343a40;
+       margin: 0;
+       padding: 0;
+       display: flex;
+       flex-direction: column;
+       min-height: 100vh;
+       line-height: 1.6;
     }
     h1, h2, h3, legend {
       font-family: 'Roboto', sans-serif;
@@ -34,17 +51,54 @@
       color: #212529;
       margin-top: 0;
     }
-    .container { 
-      max-width: 1200px; 
-      margin: auto; 
-      background: #ffffff; 
-      padding: 2rem; 
-      border-radius: 12px; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+    .header {
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .header .container {
       display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      position: relative;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .header a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .header a:hover {
+      color: #e9ecef;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .main-wrapper {
+      flex: 1;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+       max-width: 1200px;
+       margin: auto;
+       background: #ffffff;
+       padding: 2rem;
+       border-radius: 12px;
+       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+       display: flex;
+       flex-direction: column;
+       gap: 2rem;
+       position: relative;
     }
     @media (min-width: 1024px) {
         .container {
@@ -62,23 +116,23 @@
       flex-direction: column;
       gap: 1.5rem;
     }
-    .inputs { 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 1.5rem; 
-    }
-    .card { 
-      background: #f1f3f5; 
-      border-radius: 8px; 
-      padding: 1.5rem; 
-      flex: 1 1 100%;
-      transition: all 0.3s ease;
-      position: relative;
-      border: 1px solid #e9ecef;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
+    .inputs {
+       display: flex;
+       flex-wrap: wrap;
+       gap: 1.5rem;
+     }
+    .card {
+       background: #f1f3f5;
+       border-radius: 8px;
+       padding: 1.5rem;
+       flex: 1 1 100%;
+       transition: all 0.3s ease;
+       position: relative;
+       border: 1px solid #e9ecef;
+       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+       display: flex;
+       gap: 1.5rem;
+       flex-wrap: wrap;
     }
     .card-inputs {
         flex: 1 1 50%;
@@ -95,16 +149,16 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       transform: translateY(-2px);
     }
-    button { 
-      background: #007bff; 
-      color: #fff; 
-      border: none; 
-      padding: 0.75rem 1.5rem; 
-      border-radius: 6px; 
-      cursor: pointer; 
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      font-weight: 500;
-      letter-spacing: 0.5px;
+    button {
+       background: #007bff;
+       color: #fff;
+       border: none;
+       padding: 0.75rem 1.5rem;
+       border-radius: 6px;
+       cursor: pointer;
+       transition: background-color 0.3s ease, transform 0.2s ease;
+       font-weight: 500;
+       letter-spacing: 0.5px;
     }
     button.add-btn {
       background: #28a745;
@@ -149,12 +203,12 @@
     .remove-btn:hover {
         background: #c82333;
     }
-    .exports, .chart-controls { 
-      margin-top: 1.5rem; 
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      flex-wrap: wrap;
+    .exports, .chart-controls {
+       margin-top: 1.5rem;
+       display: flex;
+       gap: 1rem;
+       align-items: center;
+       flex-wrap: wrap;
     }
     .ad-placement {
       margin: 1.5rem 0;
@@ -163,11 +217,11 @@
       padding: 1.5rem;
       border-radius: 8px;
     }
-    .charts { 
-      display: grid; 
-      grid-template-columns: 1fr;
-      gap: 1.5rem; 
-      margin-top: 1.5rem;
+    .charts {
+       display: grid;
+       grid-template-columns: 1fr;
+       gap: 1.5rem;
+       margin-top: 1.5rem;
     }
     @media (min-width: 768px) {
       .charts {
@@ -377,7 +431,6 @@
         padding-top: 1rem;
         border-top: 1px solid #e0e0e0;
     }
-    
     /* New Aesthetic */
     .header-content {
         text-align: center;
@@ -410,11 +463,57 @@
         width: auto;
         margin-right: 0.5rem;
     }
+    .footer {
+      background-color: #343a40;
+      color: #ffffff;
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+    .footer .container {
+      flex-direction: column;
+      background: none;
+      box-shadow: none;
+      padding: 0;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .footer-links a {
+      color: #ffffff;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+    .footer-links a:hover {
+      opacity: 1;
+    }
+    .footer p {
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+        opacity: 0.7;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="main-content">
+  <header class="header">
+    <div class="container">
+      <a href="index.html"><h1>Total Wealth Planner</h1></a>
+      <nav class="nav-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-wrapper">
+    <div class="container">
+      <div class="main-content">
         <div id="share-buttons">
           <button type="button" class="share-button" id="share-button">SHARE</button>
           <div class="share-icons">
@@ -425,14 +524,13 @@
             <a href="#" class="instagram-share" target="_blank"><svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 8c-66.2 0-120 53.8-120 120v256c0 66.2 53.8 120 120 120h64c66.2 0 120-53.8 120-120V128c0-66.2-53.8-120-120-120H256zm0 40h64c44.1 0 80 35.9 80 80v256c0 44.1-35.9 80-80 80h-64c-44.1 0-80-35.9-80-80V128c0-44.1 35.9-80 80-80zM384 192v192c0 17.7-14.3 32-32 32s-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32zm-64-64c0 17.7-14.3 32-32 32H192c-17.7 0-32-14.3-32-32s14.3-32 32-32h96c17.7 0 32 14.3 32 32z"/></svg></a>
           </div>
         </div>
-
         <div class="header-content">
           <h1>Total Wealth Calculator & Planner</h1>
+          <p>Estimate and plan your financial future with our comprehensive investment tool.</p>
         </div>
-      
+
         <form id="planner-form">
           <div class="inputs">
-              
             <div class="investment-group">
               <h2>SIPs</h2>
               <div id="sip-inputs" class="input-section">
@@ -473,18 +571,18 @@
                     <div class="chart-display">
                       <canvas class="chart-canvas" id="sipChart-0"></canvas>
                       <div class="chart-values">
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
-                            <span id="sip-invested-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                            <span id="sip-returns-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Total Value</span>
-                            <span id="sip-total-0">₹0</span>
-                          </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
+                          <span id="sip-invested-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                          <span id="sip-returns-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Total Value</span>
+                          <span id="sip-total-0">₹0</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -492,7 +590,6 @@
               </div>
               <button type="button" class="add-btn" onclick="addInvestment('sip', 5)">Add another SIP</button>
             </div>
-            
             <div class="investment-group">
               <h2>Lumpsums</h2>
               <div id="lumpsum-inputs" class="input-section">
@@ -525,18 +622,18 @@
                     <div class="chart-display">
                       <canvas class="chart-canvas" id="lumpsumChart-0"></canvas>
                       <div class="chart-values">
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
-                            <span id="lumpsum-invested-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                            <span id="lumpsum-returns-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Total Value</span>
-                            <span id="lumpsum-total-0">₹0</span>
-                          </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
+                          <span id="lumpsum-invested-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                          <span id="lumpsum-returns-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Total Value</span>
+                          <span id="lumpsum-total-0">₹0</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -544,7 +641,6 @@
               </div>
               <button type="button" class="add-btn" onclick="addInvestment('lumpsum', 5)">Add another Lumpsum</button>
             </div>
-            
             <div class="investment-group">
               <h2>Fixed Deposits</h2>
               <div id="fd-inputs" class="input-section">
@@ -577,18 +673,18 @@
                     <div class="chart-display">
                       <canvas class="chart-canvas" id="fdChart-0"></canvas>
                       <div class="chart-values">
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
-                            <span id="fd-invested-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                            <span id="fd-returns-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Total Value</span>
-                            <span id="fd-total-0">₹0</span>
-                          </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
+                          <span id="fd-invested-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                          <span id="fd-returns-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Total Value</span>
+                          <span id="fd-total-0">₹0</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -596,7 +692,6 @@
               </div>
               <button type="button" class="add-btn" onclick="addInvestment('fd', 5)">Add another FD</button>
             </div>
-
             <div class="investment-group">
               <h2>Gold/Silver</h2>
               <div id="gold-inputs" class="input-section">
@@ -629,18 +724,18 @@
                     <div class="chart-display">
                       <canvas class="chart-canvas" id="goldChart-0"></canvas>
                       <div class="chart-values">
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
-                            <span id="gold-invested-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                            <span id="gold-returns-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Total Value</span>
-                            <span id="gold-total-0">₹0</span>
-                          </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
+                          <span id="gold-invested-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                          <span id="gold-returns-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Total Value</span>
+                          <span id="gold-total-0">₹0</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -648,7 +743,6 @@
               </div>
               <button type="button" class="add-btn" onclick="addInvestment('gold', 5)">Add another Gold/Silver</button>
             </div>
-            
             <div class="investment-group">
               <h2>NPS</h2>
               <div id="nps-inputs" class="input-section">
@@ -695,22 +789,22 @@
                     <div class="chart-display">
                       <canvas class="chart-canvas" id="npsChart-0"></canvas>
                       <div class="chart-values">
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
-                            <span id="nps-invested-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                            <span id="nps-returns-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Total Value</span>
-                            <span id="nps-total-0">₹0</span>
-                          </div>
-                          <div class="value-row">
-                            <span>Monthly Pension</span>
-                            <span id="nps-pension-0">₹0</span>
-                          </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
+                          <span id="nps-invested-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                          <span id="nps-returns-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Total Value</span>
+                          <span id="nps-total-0">₹0</span>
+                        </div>
+                        <div class="value-row">
+                          <span>Monthly Pension</span>
+                          <span id="nps-pension-0">₹0</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -719,11 +813,10 @@
             </div>
           </div>
           <div class="ad-placement">
-              Google AdSense Horizontal Placeholder (1)
+            Google AdSense Horizontal Placeholder (1)
           </div>
           <button type="button" id="calculate-btn">Estimate Total Wealth</button>
         </form>
-        
         <div id="inflation-section">
           <label class="inflation-toggle">
             <input type="checkbox" id="inflation-toggle-btn">
@@ -732,20 +825,16 @@
           <label>Inflation Rate (% p.a.)</label>
           <input type="number" id="inflation-rate" value="6" step="0.1">
         </div>
-
         <div id="total-wealth-summary">
           <h3>Total Wealth (Nominal): <span id="total-wealth-value">₹0</span></h3>
           <h3>Total Wealth (Adjusted for Inflation): <span id="total-wealth-value-adjusted">₹0</span></h3>
         </div>
-        
         <div class="exports">
           <button type="button" id="download-csv">Export CSV</button>
         </div>
-
         <div class="ad-placement">
           Google AdSense Horizontal Placeholder (2)
         </div>
-
         <div class="chart-controls">
           <label for="chart-view">View:</label>
           <select id="chart-view">
@@ -754,14 +843,11 @@
           </select>
           <button type="button" id="export-chart">Export Chart Image</button>
         </div>
-        
         <div class="charts">
           <div class="chart-container"><canvas id="pieChart"></canvas></div>
           <div class="chart-container"><canvas id="lineChart"></canvas></div>
         </div>
-        
         <hr>
-
         <div class="faq-section">
           <h2>Frequently Asked Questions</h2>
           <div class="faq-item">
@@ -785,70 +871,95 @@
             <p>NPS is a voluntary, long-term retirement-focused investment scheme. It is designed to provide a secure and flexible retirement solution. Contributions are invested in a mix of equity and debt, and a portion of the final corpus must be used to purchase an annuity for a monthly pension.</p>
           </div>
         </div>
-
-        <div class="disclaimer-section">
-          <h3>Disclaimer</h3>
-          <p>This Total Wealth Calculator and Planner is intended for educational and informational purposes only. The results are based on user-provided inputs and are estimates, not guaranteed returns. The actual performance of any investment can vary significantly. Investing in financial markets is subject to risk, and you should always consult with a qualified financial advisor before making any investment decisions. This tool does not constitute financial advice, and the creators are not liable for any financial outcomes based on its use.</p>
-        </div>
         <div class="ad-placement">
           Google AdSense Horizontal Placeholder (3)
         </div>
-    </div>
-    
-    <div class="ad-sidebar">
-      <div class="ad-placement vertical">
-        Google AdSense Vertical Placeholder (4)
       </div>
-      <div class="ad-placement vertical">
-        Google AdSense Second Vertical Placeholder (5)
+      <div class="ad-sidebar">
+        <div class="ad-placement vertical">
+          Google AdSense Vertical Placeholder (4)
+        </div>
+        <div class="ad-placement vertical">
+          Google AdSense Second Vertical Placeholder (5)
+        </div>
       </div>
     </div>
   </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="privacy-policy.html">Privacy Policy & Disclaimer</a>
+      </div>
+      <p>&copy; 2024 Your Website. All rights reserved.</p>
+    </div>
+  </footer>
   
   <script>
-    const COLORS = ['#5470C6','#91CC75','#EE6666','#FAC858', '#73c0de', '#9A60B4', '#EA7CCC'];
-    let pieChartInstance = null, lineChartInstance = null;
+    // Define a consistent color palette for the charts
+    const COLORS = ['#5470C6', '#91CC75', '#EE6666', '#FAC858', '#73c0de', '#9A60B4', '#EA7CCC'];
+
+    // Global variables to hold chart instances
+    let pieChartInstance = null;
+    let lineChartInstance = null;
     const miniChartInstances = {};
-    let sipCounter = 1, lumpsumCounter = 1, fdCounter = 1, goldCounter = 1;
-    
+
+    // Counters for dynamically added investment cards
+    let sipCounter = 1;
+    let lumpsumCounter = 1;
+    let fdCounter = 1;
+    let goldCounter = 1;
+
+    // Helper function to safely get a number from an input field
     const getNum = (selector, parent = document) => {
-        const input = parent.querySelector(selector);
-        return parseFloat(input.value) || parseFloat(input.placeholder) || 0;
-    }
-    const comp = (p, r, y) => p * Math.pow(1 + r/100, y);
-    const sipCalc = (a, r, y, freq) => {
-      const periods = y * freq;
-      const rate = (r/100) / freq;
-      if (rate === 0) return a * periods;
-      return a * ((Math.pow(1 + rate, periods) - 1) / rate) * (1 + rate);
-    };
-    const npsCalc = (currentAge, monthlyContribution, returnRate, annuityPercent, annuityRate) => {
-        const retirementAge = 60;
-        const yearsToRetirement = retirementAge - currentAge;
-        if (yearsToRetirement <= 0) {
-            return { corpus: 0, lumpSum: 0, monthlyPension: 0, yearsToRetirement: 0, investedAmount: 0 };
-        }
-        const monthlyRate = (returnRate / 100) / 12;
-        const totalMonths = yearsToRetirement * 12;
-        let corpus = 0;
-        for (let i = 0; i < totalMonths; i++) {
-            corpus = corpus * (1 + monthlyRate) + monthlyContribution;
-        }
-        const lumpSumPercent = (100 - annuityPercent) / 100;
-        const annuityCorpus = corpus * (annuityPercent / 100);
-        const lumpSum = corpus * lumpSumPercent;
-        const monthlyPension = (annuityCorpus * (annuityRate / 100)) / 12;
-        const investedAmount = monthlyContribution * totalMonths;
-        return { corpus, lumpSum, monthlyPension, yearsToRetirement, investedAmount };
+      const input = parent.querySelector(selector);
+      return parseFloat(input.value) || parseFloat(input.placeholder) || 0;
     };
 
+    // Calculation functions for different investment types
+    // Compounded annual growth rate (CAGR) for lump-sum investments
+    const comp = (principal, rate, years) => principal * Math.pow(1 + rate / 100, years);
+
+    // SIP (Systematic Investment Plan) calculator
+    const sipCalc = (amount, rate, years, frequency) => {
+      const periods = years * frequency;
+      const ratePerPeriod = (rate / 100) / frequency;
+      if (ratePerPeriod === 0) return amount * periods;
+      return amount * ((Math.pow(1 + ratePerPeriod, periods) - 1) / ratePerPeriod) * (1 + ratePerPeriod);
+    };
+
+    // NPS (National Pension System) calculator
+    const npsCalc = (currentAge, monthlyContribution, returnRate, annuityPercent, annuityRate) => {
+      const retirementAge = 60;
+      const yearsToRetirement = retirementAge - currentAge;
+      if (yearsToRetirement <= 0) {
+        return { corpus: 0, lumpSum: 0, monthlyPension: 0, yearsToRetirement: 0, investedAmount: 0 };
+      }
+      const monthlyRate = (returnRate / 100) / 12;
+      const totalMonths = yearsToRetirement * 12;
+      let corpus = 0;
+      for (let i = 0; i < totalMonths; i++) {
+        corpus = corpus * (1 + monthlyRate) + monthlyContribution;
+      }
+      const lumpSumPercent = (100 - annuityPercent) / 100;
+      const annuityCorpus = corpus * (annuityPercent / 100);
+      const lumpSum = corpus * lumpSumPercent;
+      const monthlyPension = (annuityCorpus * (annuityRate / 100)) / 12;
+      const investedAmount = monthlyContribution * totalMonths;
+      return { corpus, lumpSum, monthlyPension, yearsToRetirement, investedAmount };
+    };
+
+    // HTML templates for adding new investment cards
     const templates = {
       sip: (index) => `
         <div class="card sip-card">
           <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
           <div class="card-inputs">
             <div class="input-row">
-              <label>SIP Amount</label>
+              <label>Monthly SIP Amount</label>
               <div class="input-container">
                 <input type="number" class="sip-amount" placeholder="Eg. 5000">
               </div>
@@ -882,18 +993,18 @@
             <div class="chart-display">
               <canvas class="chart-canvas" id="sipChart-${index}"></canvas>
               <div class="chart-values">
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
-                    <span id="sip-invested-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                    <span id="sip-returns-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Total Value</span>
-                    <span id="sip-total-${index}">₹0</span>
-                  </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: #5470C6;"></div>Invested Amount</span>
+                  <span id="sip-invested-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                  <span id="sip-returns-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Total Value</span>
+                  <span id="sip-total-${index}">₹0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -930,18 +1041,18 @@
             <div class="chart-display">
               <canvas class="chart-canvas" id="lumpsumChart-${index}"></canvas>
               <div class="chart-values">
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
-                    <span id="lumpsum-invested-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                    <span id="lumpsum-returns-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Total Value</span>
-                    <span id="lumpsum-total-${index}">₹0</span>
-                  </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: #91CC75;"></div>Invested Amount</span>
+                  <span id="lumpsum-invested-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                  <span id="lumpsum-returns-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Total Value</span>
+                  <span id="lumpsum-total-${index}">₹0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -978,18 +1089,18 @@
             <div class="chart-display">
               <canvas class="chart-canvas" id="fdChart-${index}"></canvas>
               <div class="chart-values">
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
-                    <span id="fd-invested-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                    <span id="fd-returns-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Total Value</span>
-                    <span id="fd-total-${index}">₹0</span>
-                  </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: #EE6666;"></div>Invested Amount</span>
+                  <span id="fd-invested-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                  <span id="fd-returns-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Total Value</span>
+                  <span id="fd-total-${index}">₹0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1026,18 +1137,18 @@
             <div class="chart-display">
               <canvas class="chart-canvas" id="goldChart-${index}"></canvas>
               <div class="chart-values">
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
-                    <span id="gold-invested-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                    <span id="gold-returns-${index}">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Total Value</span>
-                    <span id="gold-total-${index}">₹0</span>
-                  </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: #FAC858;"></div>Invested Amount</span>
+                  <span id="gold-invested-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                  <span id="gold-returns-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Total Value</span>
+                  <span id="gold-total-${index}">₹0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1045,6 +1156,7 @@
       `,
       nps: (index) => `
         <div class="card nps-card">
+          <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
           <div class="card-inputs">
             <div class="input-row">
               <label>Current Age</label>
@@ -1085,24 +1197,24 @@
           </div>
           <div class="card-display">
             <div class="chart-display">
-              <canvas class="chart-canvas" id="npsChart-0"></canvas>
+              <canvas class="chart-canvas" id="npsChart-${index}"></canvas>
               <div class="chart-values">
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
-                    <span id="nps-invested-0">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
-                    <span id="nps-returns-0">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Total Value</span>
-                    <span id="nps-total-0">₹0</span>
-                  </div>
-                  <div class="value-row">
-                    <span>Monthly Pension</span>
-                    <span id="nps-pension-0">₹0</span>
-                  </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: #73c0de;"></div>Invested Amount</span>
+                  <span id="nps-invested-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span><div class="legend-box" style="background-color: rgba(211, 211, 211, 0.5);"></div>Est. Returns</span>
+                  <span id="nps-returns-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Total Value</span>
+                  <span id="nps-total-${index}">₹0</span>
+                </div>
+                <div class="value-row">
+                  <span>Monthly Pension</span>
+                  <span id="nps-pension-${index}">₹0</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1110,135 +1222,166 @@
       `,
     };
 
+    // Adds event listeners to a new card to handle slider and input changes
     function addSliderListeners(card, type, index) {
-        card.querySelectorAll('input[type="range"]').forEach(slider => {
-            const valueInput = card.querySelector(`.${slider.className.replace('-slider', '-value')}`);
-            const hiddenInput = card.querySelector(`.${slider.className.replace('-slider', '')}`);
+      card.querySelectorAll('input[type="range"]').forEach(slider => {
+        const valueInput = card.querySelector(`.${slider.className.replace('-slider', '-value')}`);
+        const hiddenInput = card.querySelector(`.${slider.className.replace('-slider', '')}`);
+        const updateValues = () => {
+          valueInput.value = slider.value;
+          hiddenInput.value = slider.value;
+          updateMiniChart(type, index, card);
+          draw();
+        };
+        const updateFromInput = () => {
+          const val = parseFloat(valueInput.value);
+          if (!isNaN(val) && val >= parseFloat(slider.min) && val <= parseFloat(slider.max)) {
+            slider.value = val;
+            hiddenInput.value = val;
+            updateMiniChart(type, index, card);
+            draw();
+          }
+        };
 
-            const updateValues = () => {
-                valueInput.value = slider.value;
-                hiddenInput.value = slider.value;
-                updateMiniChart(type, index, card);
-            };
-
-            const updateFromInput = () => {
-                const val = parseFloat(valueInput.value);
-                if (!isNaN(val) && val >= parseFloat(slider.min) && val <= parseFloat(slider.max)) {
-                    slider.value = val;
-                    hiddenInput.value = val;
-                    updateMiniChart(type, index, card);
-                }
-            };
-            
-            slider.addEventListener('input', updateValues);
-            valueInput.addEventListener('input', updateFromInput);
+        slider.addEventListener('input', updateValues);
+        valueInput.addEventListener('input', updateFromInput);
+      });
+      card.querySelectorAll('input:not([type="range"]), select').forEach(input => {
+        input.addEventListener('input', () => {
+          updateMiniChart(type, index, card);
+          draw();
         });
-
-        card.querySelectorAll('input, select').forEach(input => {
-            input.addEventListener('input', () => updateMiniChart(type, index, card));
-        });
-
-        updateMiniChart(type, index, card);
+      });
+      updateMiniChart(type, index, card);
     }
-    
+
+    // Toggles the visibility of social media share icons
+    function toggleShareIcons() {
+        const shareIcons = document.querySelector('.share-icons');
+        shareIcons.classList.toggle('active');
+    }
+
+    // Sets up the share links for social media
+    function setupShareLinks() {
+        const title = encodeURIComponent("Total Wealth Calculator & Planner");
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent("Check out this awesome wealth calculator!");
+
+        document.querySelector('.x-share').href = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+        document.querySelector('.whatsapp-share').href = `https://wa.me/?text=${text} ${url}`;
+        document.querySelector('.gmail-share').href = `mailto:?subject=${title}&body=${text}%0A%0A${url}`;
+        document.querySelector('.facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+        document.querySelector('.instagram-share').onclick = () => {
+          // Instagram does not have a public sharing URL, so we can't create a direct link.
+          // This will not do anything.
+          return false;
+        };
+    }
+
+    // Updates the individual doughnut chart for an investment card
     function updateMiniChart(type, index, card) {
-        const investedAmountId = `${type}-invested-${index}`;
-        const returnsAmountId = `${type}-returns-${index}`;
-        const totalValueId = `${type}-total-${index}`;
-        const pensionId = `${type}-pension-${index}`;
-        const chartId = `${type}Chart-${index}`;
-        const color = COLORS[Object.keys(templates).indexOf(type)];
+      const investedAmountId = `${type}-invested-${index}`;
+      const returnsAmountId = `${type}-returns-${index}`;
+      const totalValueId = `${type}-total-${index}`;
+      const pensionId = `${type}-pension-${index}`;
+      const chartId = `${type}Chart-${index}`;
+      const color = COLORS[Object.keys(templates).indexOf(type)];
+      let invested = 0;
+      let result = 0;
+      let tenure = 0;
 
-        let invested = 0;
-        let result = 0;
-        let tenure = 0;
+      if (type === 'sip') {
+        const sipAmt = getNum('.sip-amount', card);
+        const sipRate = getNum('.sip-rate', card);
+        const sipY = getNum('.sip-duration', card);
+        const sipFreq = getNum('.sip-frequency', card);
+        invested = sipAmt * sipY * sipFreq;
+        result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
+        tenure = sipY;
+      } else if (type === 'lumpsum') {
+        const lsAmt = getNum('.lumpsum-amount', card);
+        const lsRate = getNum('.lumpsum-rate', card);
+        const lsY = getNum('.lumpsum-duration', card);
+        invested = lsAmt;
+        result = comp(lsAmt, lsRate, lsY);
+        tenure = lsY;
+      } else if (type === 'fd') {
+        const fdAmt = getNum('.fd-amount', card);
+        const fdRate = getNum('.fd-rate', card);
+        const fdY = getNum('.fd-duration', card);
+        invested = fdAmt;
+        result = comp(fdAmt, fdRate, fdY);
+        tenure = fdY;
+      } else if (type === 'gold') {
+        const goldAmt = getNum('.gold-amount', card);
+        const goldRate = getNum('.gold-rate', card);
+        const goldY = getNum('.gold-duration', card);
+        invested = goldAmt;
+        result = comp(goldAmt, goldRate, goldY);
+        tenure = goldY;
+      } else if (type === 'nps') {
+        const currentAge = getNum('.nps-current-age', card);
+        const contributionAmt = getNum('.nps-contribution-amount', card);
+        const returnRate = getNum('.nps-rate', card);
+        const annuityPercent = getNum('.nps-annuity-percent', card);
+        const annuityRate = getNum('.nps-annuity-rate', card);
+        const npsResult = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
+        invested = npsResult.investedAmount;
+        result = npsResult.corpus;
+        tenure = npsResult.yearsToRetirement;
+        document.getElementById(pensionId).textContent = `₹${npsResult.monthlyPension.toFixed(0)}`;
+      }
 
-        if (type === 'sip') {
-            const sipAmt = getNum('.sip-amount', card);
-            const sipRate = getNum('.sip-rate', card);
-            const sipY = getNum('.sip-duration', card);
-            const sipFreq = getNum('.sip-frequency', card);
-            invested = sipAmt * sipY * sipFreq;
-            result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
-            tenure = sipY;
-        } else if (type === 'lumpsum') {
-            const lsAmt = getNum('.lumpsum-amount', card);
-            const lsRate = getNum('.lumpsum-rate', card);
-            const lsY = getNum('.lumpsum-duration', card);
-            invested = lsAmt;
-            result = comp(lsAmt, lsRate, lsY);
-            tenure = lsY;
-        } else if (type === 'fd') {
-            const fdAmt = getNum('.fd-amount', card);
-            const fdRate = getNum('.fd-rate', card);
-            const fdY = getNum('.fd-duration', card);
-            invested = fdAmt;
-            result = comp(fdAmt, fdRate, fdY);
-            tenure = fdY;
-        } else if (type === 'gold') {
-            const goldAmt = getNum('.gold-amount', card);
-            const goldRate = getNum('.gold-rate', card);
-            const goldY = getNum('.gold-duration', card);
-            invested = goldAmt;
-            result = comp(goldAmt, goldRate, goldY);
-            tenure = goldY;
-        } else if (type === 'nps') {
-            const currentAge = getNum('.nps-current-age', card);
-            const contributionAmt = getNum('.nps-contribution-amount', card);
-            const returnRate = getNum('.nps-rate', card);
-            const annuityPercent = getNum('.nps-annuity-percent', card);
-            const annuityRate = getNum('.nps-annuity-rate', card);
-            const npsResult = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
-            invested = npsResult.investedAmount;
-            result = npsResult.corpus;
-            tenure = npsResult.yearsToRetirement;
-            document.getElementById(pensionId).textContent = `₹${npsResult.monthlyPension.toFixed(0)}`;
-        }
-        
-        const returns = result - invested;
-        
-        document.getElementById(investedAmountId).textContent = `₹${invested.toFixed(0)}`;
-        document.getElementById(returnsAmountId).textContent = `₹${Math.max(0, returns).toFixed(0)}`;
-        document.getElementById(totalValueId).textContent = `₹${result.toFixed(0)}`;
+      const returns = result - invested;
 
-        if (miniChartInstances[chartId]) {
-            miniChartInstances[chartId].destroy();
-        }
+      document.getElementById(investedAmountId).textContent = `₹${invested.toFixed(0)}`;
+      document.getElementById(returnsAmountId).textContent = `₹${Math.max(0, returns).toFixed(0)}`;
+      document.getElementById(totalValueId).textContent = `₹${result.toFixed(0)}`;
 
-        miniChartInstances[chartId] = new Chart(document.getElementById(chartId), {
-            type: 'doughnut',
-            data: {
-              labels: ['Invested', 'Return'],
-              datasets: [{
-                  data: [invested, Math.max(0, returns)],
-                  backgroundColor: [color, 'rgba(211, 211, 211, 0.5)'],
-                  borderWidth: 0
-              }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                      callbacks: {
-                        label: function(context) {
-                          const value = context.parsed;
-                          const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                          const percentage = ((value / total) * 100).toFixed(1) + '%';
-                          const label = context.label;
-                          return `${label}: ${percentage}`;
-                        }
-                      }
-                    }
-                },
-                cutout: '70%',
+      if (miniChartInstances[chartId]) {
+        miniChartInstances[chartId].destroy();
+      }
+      miniChartInstances[chartId] = new Chart(document.getElementById(chartId), {
+        type: 'doughnut',
+        data: {
+          labels: ['Invested', 'Return'],
+          datasets: [{
+            data: [invested, Math.max(0, returns)],
+            backgroundColor: [color, 'rgba(211, 211, 211, 0.5)'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const value = context.parsed;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1) + '%';
+                  const label = context.label;
+                  return `${label}: ${percentage}`;
+                }
+              }
             }
-        });
+          },
+          cutout: '70%',
+        }
+      });
     }
 
+    // Function to add a new investment card dynamically
     function addInvestment(type, limit) {
       const container = document.getElementById(`${type}-inputs`);
-      const index = (type === 'sip' ? sipCounter++ : type === 'lumpsum' ? lumpsumCounter++ : type === 'fd' ? fdCounter++ : goldCounter++);
+      let index;
+      if (type === 'sip') { index = sipCounter++; }
+      else if (type === 'lumpsum') { index = lumpsumCounter++; }
+      else if (type === 'fd') { index = fdCounter++; }
+      else if (type === 'gold') { index = goldCounter++; }
+      else { return; }
+
       if (container.children.length < limit) {
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = templates[type](index).trim();
@@ -1246,151 +1389,168 @@
         container.appendChild(card);
         addSliderListeners(card, type, index);
       } else {
-        alert(`You can add a maximum of ${limit} ${type} investments.`);
+        // Use a custom modal instead of alert()
+        console.warn(`You can add a maximum of ${limit} ${type} investments.`);
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const sipCard = document.querySelector('.sip-card');
-        addSliderListeners(sipCard, 'sip', 0);
-        const lumpsumCard = document.querySelector('.lumpsum-card');
-        addSliderListeners(lumpsumCard, 'lumpsum', 0);
-        const fdCard = document.querySelector('.fd-card');
-        addSliderListeners(fdCard, 'fd', 0);
-        const goldCard = document.querySelector('.gold-card');
-        addSliderListeners(goldCard, 'gold', 0);
-        const npsCard = document.querySelector('.nps-card');
-        addSliderListeners(npsCard, 'nps', 0);
-        
-        document.getElementById('share-button').onclick = toggleShareIcons;
-        setupShareLinks();
-        
-        // Initial calculation on load
-        draw();
-    });
-    
-    // Add event listener to re-draw charts when the user returns to the page
-    window.addEventListener('focus', () => {
-      // Re-draw all charts if they are not already drawn
-      if (pieChartInstance && lineChartInstance) return;
-      draw();
-    });
-
+    // Main function to draw the combined charts
     function draw() {
+      // Fetch all investment data and calculate totals
       const view = document.getElementById('chart-view').value;
       const allSips = document.querySelectorAll('.sip-card');
       const allLumpsums = document.querySelectorAll('.lumpsum-card');
       const allFds = document.querySelectorAll('.fd-card');
       const allGold = document.querySelectorAll('.gold-card');
       const allNps = document.querySelectorAll('.nps-card');
-      
+
       const inflationToggle = document.getElementById('inflation-toggle-btn').checked;
       const inflationRate = inflationToggle ? getNum('#inflation-rate') : 0;
-      
+
       let allInvestmentResults = { sip: [], lumpsum: [], fd: [], gold: [], nps: [] };
       let totalWealth = 0;
       let totalWealthAdjusted = 0;
       let maxY = 0;
-      
+
       allSips.forEach(card => {
-          const sipAmt = getNum('.sip-amount', card);
-          const sipRate = getNum('.sip-rate', card);
-          const sipY = getNum('.sip-duration', card);
-          const sipFreq = getNum('.sip-frequency', card);
-          const result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
-          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, sipY);
-          allInvestmentResults.sip.push({ amount: sipAmt, rate: sipRate, duration: sipY, result, resultAdjusted, frequency: sipFreq });
-          totalWealth += result;
-          totalWealthAdjusted += resultAdjusted;
-          if (sipY > maxY) maxY = sipY;
+        const sipAmt = getNum('.sip-amount', card);
+        const sipRate = getNum('.sip-rate', card);
+        const sipY = getNum('.sip-duration', card);
+        const sipFreq = getNum('.sip-frequency', card);
+        const result = sipCalc(sipAmt, sipRate, sipY, sipFreq);
+        const resultAdjusted = result / Math.pow(1 + inflationRate / 100, sipY);
+        allInvestmentResults.sip.push({ amount: sipAmt, rate: sipRate, duration: sipY, result, resultAdjusted, frequency: sipFreq });
+        totalWealth += result;
+        totalWealthAdjusted += resultAdjusted;
+        if (sipY > maxY) maxY = sipY;
       });
+
       allLumpsums.forEach(card => {
-          const lsAmt = getNum('.lumpsum-amount', card);
-          const lsRate = getNum('.lumpsum-rate', card);
-          const lsY = getNum('.lumpsum-duration', card);
-          const result = comp(lsAmt, lsRate, lsY);
-          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, lsY);
-          allInvestmentResults.lumpsum.push({ amount: lsAmt, rate: lsRate, duration: lsY, result, resultAdjusted });
-          totalWealth += result;
-          totalWealthAdjusted += resultAdjusted;
-          if (lsY > maxY) maxY = lsY;
+        const lsAmt = getNum('.lumpsum-amount', card);
+        const lsRate = getNum('.lumpsum-rate', card);
+        const lsY = getNum('.lumpsum-duration', card);
+        const result = comp(lsAmt, lsRate, lsY);
+        const resultAdjusted = result / Math.pow(1 + inflationRate / 100, lsY);
+        allInvestmentResults.lumpsum.push({ amount: lsAmt, rate: lsRate, duration: lsY, result, resultAdjusted });
+        totalWealth += result;
+        totalWealthAdjusted += resultAdjusted;
+        if (lsY > maxY) maxY = lsY;
       });
+
       allFds.forEach(card => {
-          const fdAmt = getNum('.fd-amount', card);
-          const fdRate = getNum('.fd-rate', card);
-          const fdY = getNum('.fd-duration', card);
-          const result = comp(fdAmt, fdRate, fdY);
-          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, fdY);
-          allInvestmentResults.fd.push({ amount: fdAmt, rate: fdRate, duration: fdY, result, resultAdjusted });
-          totalWealth += result;
-          totalWealthAdjusted += resultAdjusted;
-          if (fdY > maxY) maxY = fdY;
+        const fdAmt = getNum('.fd-amount', card);
+        const fdRate = getNum('.fd-rate', card);
+        const fdY = getNum('.fd-duration', card);
+        const result = comp(fdAmt, fdRate, fdY);
+        const resultAdjusted = result / Math.pow(1 + inflationRate / 100, fdY);
+        allInvestmentResults.fd.push({ amount: fdAmt, rate: fdRate, duration: fdY, result, resultAdjusted });
+        totalWealth += result;
+        totalWealthAdjusted += resultAdjusted;
+        if (fdY > maxY) maxY = fdY;
       });
+
       allGold.forEach(card => {
-          const goldAmt = getNum('.gold-amount', card);
-          const goldRate = getNum('.gold-rate', card);
-          const goldY = getNum('.gold-duration', card);
-          const result = comp(goldAmt, goldRate, goldY);
-          const resultAdjusted = result / Math.pow(1 + inflationRate / 100, goldY);
-          allInvestmentResults.gold.push({ amount: goldAmt, rate: goldRate, duration: goldY, result, resultAdjusted });
-          totalWealth += result;
-          totalWealthAdjusted += resultAdjusted;
-          if (goldY > maxY) maxY = goldY;
+        const goldAmt = getNum('.gold-amount', card);
+        const goldRate = getNum('.gold-rate', card);
+        const goldY = getNum('.gold-duration', card);
+        const result = comp(goldAmt, goldRate, goldY);
+        const resultAdjusted = result / Math.pow(1 + inflationRate / 100, goldY);
+        allInvestmentResults.gold.push({ amount: goldAmt, rate: goldRate, duration: goldY, result, resultAdjusted });
+        totalWealth += result;
+        totalWealthAdjusted += resultAdjusted;
+        if (goldY > maxY) maxY = goldY;
       });
+
       allNps.forEach(card => {
-          const currentAge = getNum('.nps-current-age', card);
-          const contributionAmt = getNum('.nps-contribution-amount', card);
-          const returnRate = getNum('.nps-rate', card);
-          const annuityPercent = getNum('.nps-annuity-percent', card);
-          const annuityRate = getNum('.nps-annuity-rate', card);
-          const result = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
-          const resultAdjusted = result.corpus / Math.pow(1 + inflationRate / 100, result.yearsToRetirement);
-          allInvestmentResults.nps.push({ ...result, resultAdjusted, contribution: contributionAmt, returnRate, currentAge });
-          totalWealth += result.corpus;
-          totalWealthAdjusted += resultAdjusted;
-          if (result.yearsToRetirement > maxY) maxY = result.yearsToRetirement;
+        const currentAge = getNum('.nps-current-age', card);
+        const contributionAmt = getNum('.nps-contribution-amount', card);
+        const returnRate = getNum('.nps-rate', card);
+        const annuityPercent = getNum('.nps-annuity-percent', card);
+        const annuityRate = getNum('.nps-annuity-rate', card);
+        const result = npsCalc(currentAge, contributionAmt, returnRate, annuityPercent, annuityRate);
+        const resultAdjusted = result.corpus / Math.pow(1 + inflationRate / 100, result.yearsToRetirement);
+        allInvestmentResults.nps.push({ ...result, resultAdjusted, contribution: contributionAmt, returnRate, currentAge });
+        totalWealth += result.corpus;
+        totalWealthAdjusted += resultAdjusted;
+        if (result.yearsToRetirement > maxY) maxY = result.yearsToRetirement;
       });
-      
+
       document.getElementById('total-wealth-value').textContent = `₹${totalWealth.toFixed(2)}`;
       document.getElementById('total-wealth-value-adjusted').textContent = `₹${totalWealthAdjusted.toFixed(2)}`;
 
-      const labels = view === 'monthly' ? Array.from({length: maxY * 12 + 1}, (_, i) => `M${i}`) : Array.from({length: maxY + 1}, (_, i) => `Y${i}`);
+      const labels = view === 'monthly' ? Array.from({ length: maxY * 12 + 1 }, (_, i) => `M${i}`) : Array.from({ length: maxY + 1 }, (_, i) => `Y${i}`);
       const timeline = view === 'monthly' ? labels.map((_, i) => i / 12) : labels.map((_, i) => i);
-      
+
       const chartLabels = ['SIPs', 'Lumpsums', 'Fixed Deposits', 'Gold/Silver', 'NPS'];
       const chartData = [
-          allInvestmentResults.sip.reduce((sum, current) => sum + current.result, 0),
-          allInvestmentResults.lumpsum.reduce((sum, current) => sum + current.result, 0),
-          allInvestmentResults.fd.reduce((sum, current) => sum + current.result, 0),
-          allInvestmentResults.gold.reduce((sum, current) => sum + current.result, 0),
-          allInvestmentResults.nps.reduce((sum, current) => sum + current.corpus, 0)
+        allInvestmentResults.sip.reduce((sum, current) => sum + current.result, 0),
+        allInvestmentResults.lumpsum.reduce((sum, current) => sum + current.result, 0),
+        allInvestmentResults.fd.reduce((sum, current) => sum + current.result, 0),
+        allInvestmentResults.gold.reduce((sum, current) => sum + current.result, 0),
+        allInvestmentResults.nps.reduce((sum, current) => sum + current.corpus, 0)
       ];
       const chartColors = COLORS.slice(0, chartLabels.length);
-
       const lineChartDatasets = [
-        { label: 'SIPs', data: timeline.map(t => allInvestmentResults.sip.reduce((sum, inv) => {
+        {
+          label: 'SIPs',
+          data: timeline.map(t => allInvestmentResults.sip.reduce((sum, inv) => {
             const yearsToCalc = Math.min(t, inv.duration);
-            return sum + sipCalc(inv.amount, inv.rate, yearsToCalc, inv.frequency);
-        }, 0)), borderColor: COLORS[0], fill: false },
-        { label: 'Lumpsums', data: timeline.map(t => allInvestmentResults.lumpsum.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[1], fill: false },
-        { label: 'Fixed Deposits', data: timeline.map(t => allInvestmentResults.fd.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[2], fill: false },
-        { label: 'Gold/Silver', data: timeline.map(t => allInvestmentResults.gold.reduce((sum, inv) => sum + comp(inv.amount, inv.rate, t), 0)), borderColor: COLORS[3], fill: false },
-        { label: 'NPS', data: timeline.map(t => allInvestmentResults.nps.reduce((sum, inv) => {
+            return sum + (yearsToCalc > 0 ? sipCalc(inv.amount, inv.rate, yearsToCalc, inv.frequency) : 0);
+          }, 0)),
+          borderColor: COLORS[0],
+          fill: false
+        },
+        {
+          label: 'Lumpsums',
+          data: timeline.map(t => allInvestmentResults.lumpsum.reduce((sum, inv) => {
+            const yearsToCalc = Math.min(t, inv.duration);
+            return sum + (yearsToCalc > 0 ? comp(inv.amount, inv.rate, yearsToCalc) : 0);
+          }, 0)),
+          borderColor: COLORS[1],
+          fill: false
+        },
+        {
+          label: 'Fixed Deposits',
+          data: timeline.map(t => allInvestmentResults.fd.reduce((sum, inv) => {
+            const yearsToCalc = Math.min(t, inv.duration);
+            return sum + (yearsToCalc > 0 ? comp(inv.amount, inv.rate, yearsToCalc) : 0);
+          }, 0)),
+          borderColor: COLORS[2],
+          fill: false
+        },
+        {
+          label: 'Gold/Silver',
+          data: timeline.map(t => allInvestmentResults.gold.reduce((sum, inv) => {
+            const yearsToCalc = Math.min(t, inv.duration);
+            return sum + (yearsToCalc > 0 ? comp(inv.amount, inv.rate, yearsToCalc) : 0);
+          }, 0)),
+          borderColor: COLORS[3],
+          fill: false
+        },
+        {
+          label: 'NPS',
+          data: timeline.map(t => allInvestmentResults.nps.reduce((sum, inv) => {
             const yearsToRetirement = 60 - inv.currentAge;
             const yearsToCalc = Math.min(t, yearsToRetirement);
+            if (yearsToCalc <= 0) return sum + 0;
             const monthlyRate = (inv.returnRate / 100) / 12;
             const totalMonths = Math.floor(yearsToCalc * 12);
             let val = 0;
             for (let i = 0; i < totalMonths; i++) {
-                val = val * (1 + monthlyRate) + inv.contribution;
+              val = val * (1 + monthlyRate) + inv.contribution;
             }
             return sum + val;
-        }, 0)), borderColor: COLORS[4], fill: false }
+          }, 0)),
+          borderColor: COLORS[4],
+          fill: false
+        }
       ];
-      
+
+      // Destroy previous chart instances to prevent memory leaks
       if (pieChartInstance) pieChartInstance.destroy();
       if (lineChartInstance) lineChartInstance.destroy();
-      
+
+      // Create new Pie Chart
       pieChartInstance = new Chart(document.getElementById('pieChart'), {
         type: 'pie',
         data: {
@@ -1399,7 +1559,8 @@
         },
         options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
       });
-      
+
+      // Create new Line Chart
       lineChartInstance = new Chart(document.getElementById('lineChart'), {
         type: 'line',
         data: { labels, datasets: lineChartDatasets },
@@ -1407,6 +1568,7 @@
       });
     }
 
+    // Event listeners
     document.getElementById('calculate-btn').onclick = draw;
     document.getElementById('chart-view').onchange = draw;
     document.getElementById('export-chart').onclick = () => {
@@ -1417,148 +1579,158 @@
       link.click();
     };
 
+    // Export to CSV functionality
     document.getElementById('download-csv').onclick = () => {
-        const allSips = document.querySelectorAll('.sip-card');
-        const allLumpsums = document.querySelectorAll('.lumpsum-card');
-        const allFds = document.querySelectorAll('.fd-card');
-        const allGold = document.querySelectorAll('.gold-card');
-        const allNps = document.querySelectorAll('.nps-card');
+      const allSips = document.querySelectorAll('.sip-card');
+      const allLumpsums = document.querySelectorAll('.lumpsum-card');
+      const allFds = document.querySelectorAll('.fd-card');
+      const allGold = document.querySelectorAll('.gold-card');
+      const allNps = document.querySelectorAll('.nps-card');
 
-        const allSipData = Array.from(allSips).map(card => ({
-            amount: getNum('.sip-amount', card),
-            rate: getNum('.sip-rate', card),
-            duration: getNum('.sip-duration', card),
-            frequency: getNum('.sip-frequency', card)
-        }));
-        const allLumpsumData = Array.from(allLumpsums).map(card => ({
-            amount: getNum('.lumpsum-amount', card),
-            rate: getNum('.lumpsum-rate', card),
-            duration: getNum('.lumpsum-duration', card)
-        }));
-        const allFdData = Array.from(allFds).map(card => ({
-            amount: getNum('.fd-amount', card),
-            rate: getNum('.fd-rate', card),
-            duration: getNum('.fd-duration', card)
-        }));
-        const allGoldData = Array.from(allGold).map(card => ({
-            amount: getNum('.gold-amount', card),
-            rate: getNum('.gold-rate', card),
-            duration: getNum('.gold-duration', card)
-        }));
-        const allNpsData = Array.from(allNps).map(card => ({
-            currentAge: getNum('.nps-current-age', card),
-            contribution: getNum('.nps-contribution-amount', card),
-            rate: getNum('.nps-rate', card),
-            annuityPercent: getNum('.nps-annuity-percent', card),
-            annuityRate: getNum('.nps-annuity-rate', card),
-            duration: 60 - getNum('.nps-current-age', card)
-        }));
+      const allSipData = Array.from(allSips).map(card => ({
+        amount: getNum('.sip-amount', card),
+        rate: getNum('.sip-rate', card),
+        duration: getNum('.sip-duration', card),
+        frequency: getNum('.sip-frequency', card)
+      }));
+      const allLumpsumData = Array.from(allLumpsums).map(card => ({
+        amount: getNum('.lumpsum-amount', card),
+        rate: getNum('.lumpsum-rate', card),
+        duration: getNum('.lumpsum-duration', card)
+      }));
+      const allFdData = Array.from(allFds).map(card => ({
+        amount: getNum('.fd-amount', card),
+        rate: getNum('.fd-rate', card),
+        duration: getNum('.fd-duration', card)
+      }));
+      const allGoldData = Array.from(allGold).map(card => ({
+        amount: getNum('.gold-amount', card),
+        rate: getNum('.gold-rate', card),
+        duration: getNum('.gold-duration', card)
+      }));
+      const allNpsData = Array.from(allNps).map(card => ({
+        currentAge: getNum('.nps-current-age', card),
+        contribution: getNum('.nps-contribution-amount', card),
+        rate: getNum('.nps-rate', card),
+        annuityPercent: getNum('.nps-annuity-percent', card),
+        annuityRate: getNum('.nps-annuity-rate', card),
+        duration: 60 - getNum('.nps-current-age', card)
+      }));
 
-        let maxDuration = 0;
-        allSipData.forEach(s => { if (s.duration > maxDuration) maxDuration = s.duration; });
-        allLumpsumData.forEach(l => { if (l.duration > maxDuration) maxDuration = l.duration; });
-        allFdData.forEach(f => { if (f.duration > maxDuration) maxDuration = f.duration; });
-        allGoldData.forEach(g => { if (g.duration > maxDuration) maxDuration = g.duration; });
-        allNpsData.forEach(n => { if (n.duration > maxDuration) maxDuration = n.duration; });
+      let maxDuration = 0;
+      allSipData.forEach(s => { if (s.duration > maxDuration) maxDuration = s.duration; });
+      allLumpsumData.forEach(l => { if (l.duration > maxDuration) maxDuration = l.duration; });
+      allFdData.forEach(f => { if (f.duration > maxDuration) maxDuration = f.duration; });
+      allGoldData.forEach(g => { if (g.duration > maxDuration) maxDuration = g.duration; });
+      allNpsData.forEach(n => { if (n.duration > maxDuration) maxDuration = n.duration; });
+      maxDuration = Math.min(maxDuration, 50); // Cap at 50 years to avoid massive files
 
-        maxDuration = Math.min(maxDuration, 50) * 12;
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Investment Details\n";
+      allSipData.forEach((s, i) => csvContent += `SIP ${i+1},Amount: ₹${s.amount}, Frequency: ${s.frequency==12?'Monthly':s.frequency==4?'Quarterly':'Yearly'}, Rate: ${s.rate}% p.a., Duration: ${s.duration} years\n`);
+      allLumpsumData.forEach((l, i) => csvContent += `Lumpsum ${i+1},Amount: ₹${l.amount}, Rate: ${l.rate}% p.a., Duration: ${l.duration} years\n`);
+      allFdData.forEach((f, i) => csvContent += `Fixed Deposit ${i+1},Amount: ₹${f.amount}, Rate: ${f.rate}% p.a., Duration: ${f.duration} years\n`);
+      allGoldData.forEach((g, i) => csvContent += `Gold/Silver ${i+1},Amount: ₹${g.amount}, Rate: ${g.rate}% p.a., Duration: ${g.duration} years\n`);
+      allNpsData.forEach((n, i) => csvContent += `NPS ${i+1},Monthly Contribution: ₹${n.contribution}, Rate: ${n.rate}% p.a., Years to Retirement: ${n.duration}\n`);
+      csvContent += "\n";
 
-        let csvContent = "data:text/csv;charset=utf-8,";
-        
-        csvContent += "Investment Details\n";
-        allSipData.forEach((s, i) => csvContent += `SIP ${i+1},Amount: ₹${s.amount}, Frequency: ${s.frequency==12?'Monthly':s.frequency==4?'Quarterly':'Yearly'}, Rate: ${s.rate}% p.a., Duration: ${s.duration} years\n`);
-        allLumpsumData.forEach((l, i) => csvContent += `Lumpsum ${i+1},Amount: ₹${l.amount}, Rate: ${l.rate}% p.a., Duration: ${l.duration} years\n`);
-        allFdData.forEach((f, i) => csvContent += `Fixed Deposit ${i+1},Amount: ₹${f.amount}, Rate: ${f.rate}% p.a., Duration: ${f.duration} years\n`);
-        allGoldData.forEach((g, i) => csvContent += `Gold/Silver ${i+1},Amount: ₹${g.amount}, Rate: ${g.rate}% p.a., Duration: ${g.duration} years\n`);
-        allNpsData.forEach((n, i) => csvContent += `NPS ${i+1},Monthly Contribution: ₹${n.contribution}, Rate: ${n.rate}% p.a., Years to Retirement: ${n.duration}\n`);
-        csvContent += "\n";
+      const headerRow = ["Year"];
+      const sipHeaders = allSipData.map((_, i) => `SIP ${i + 1}`);
+      const lumpsumHeaders = allLumpsumData.map((_, i) => `Lumpsum ${i + 1}`);
+      const fdHeaders = allFdData.map((_, i) => `FD ${i + 1}`);
+      const goldHeaders = allGoldData.map((_, i) => `Gold/Silver ${i + 1}`);
+      const npsHeaders = allNpsData.map((_, i) => `NPS ${i + 1}`);
 
-        const headerRow = ["Month", "Year"];
-        for(let i=0; i<allSipData.length; i++) headerRow.push(`SIP ${i+1}`);
-        for(let i=0; i<allLumpsumData.length; i++) headerRow.push(`Lumpsum ${i+1}`);
-        for(let i=0; i<allFdData.length; i++) headerRow.push(`Fixed Deposit ${i+1}`);
-        for(let i=0; i<allGoldData.length; i++) headerRow.push(`Gold/Silver ${i+1}`);
-        for(let i=0; i<allNpsData.length; i++) headerRow.push(`NPS ${i+1}`);
-        headerRow.push("Total Wealth");
-        csvContent += headerRow.join(',') + "\n";
+      const allHeaders = headerRow.concat(sipHeaders, lumpsumHeaders, fdHeaders, goldHeaders, npsHeaders, ["Total Wealth"]);
+      csvContent += allHeaders.join(",") + "\n";
 
-        let currentValues = { sip: Array(allSipData.length).fill(0), lumpsum: [...allLumpsumData.map(l => l.amount)], fd: [...allFdData.map(f => f.amount)], gold: [...allGoldData.map(g => g.amount)], nps: Array(allNpsData.length).fill(0) };
+      for (let year = 1; year <= maxDuration; year++) {
+        let row = [`${year}`];
+        let totalWealthForYear = 0;
 
-        for (let i = 1; i <= maxDuration; i++) {
-            const year = Math.ceil(i / 12);
-            let row = [`${i}`, `${year}`];
-            let totalWealth = 0;
+        allSipData.forEach(s => {
+          const value = sipCalc(s.amount, s.rate, Math.min(year, s.duration), s.frequency);
+          row.push(value.toFixed(2));
+          totalWealthForYear += value;
+        });
 
-            allSipData.forEach((s, idx) => {
-                const monthlyRate = (s.rate / 100) / 12;
-                if (i <= s.duration * 12) {
-                    currentValues.sip[idx] = currentValues.sip[idx] * (1 + monthlyRate) + (i % (12 / s.frequency) === 0 ? s.amount : 0);
-                } else {
-                    currentValues.sip[idx] = currentValues.sip[idx] * (1 + monthlyRate);
-                }
-                row.push(currentValues.sip[idx].toFixed(2));
-                totalWealth += currentValues.sip[idx];
-            });
-            allLumpsumData.forEach((l, idx) => {
-                if (i <= l.duration * 12) {
-                    const monthlyRate = (l.rate / 100) / 12;
-                    currentValues.lumpsum[idx] = currentValues.lumpsum[idx] * (1 + monthlyRate);
-                }
-                row.push(currentValues.lumpsum[idx].toFixed(2));
-                totalWealth += currentValues.lumpsum[idx];
-            });
-            allFdData.forEach((f, idx) => {
-                if (i <= f.duration * 12) {
-                    const monthlyRate = (f.rate / 100) / 12;
-                    currentValues.fd[idx] = currentValues.fd[idx] * (1 + monthlyRate);
-                }
-                row.push(currentValues.fd[idx].toFixed(2));
-                totalWealth += currentValues.fd[idx];
-            });
-            allGoldData.forEach((g, idx) => {
-                if (i <= g.duration * 12) {
-                    const monthlyRate = (g.rate / 100) / 12;
-                    currentValues.gold[idx] = currentValues.gold[idx] * (1 + monthlyRate);
-                }
-                row.push(currentValues.gold[idx].toFixed(2));
-                totalWealth += currentValues.gold[idx];
-            });
-            allNpsData.forEach((n, idx) => {
-                const yearsToRetirement = 60 - n.currentAge;
-                if (i <= yearsToRetirement * 12) {
-                    const monthlyRate = (n.rate / 100) / 12;
-                    currentValues.nps[idx] = currentValues.nps[idx] * (1 + monthlyRate) + n.contribution;
-                }
-                row.push(currentValues.nps[idx].toFixed(2));
-                totalWealth += currentValues.nps[idx];
-            });
+        allLumpsumData.forEach(l => {
+          const value = comp(l.amount, l.rate, Math.min(year, l.duration));
+          row.push(value.toFixed(2));
+          totalWealthForYear += value;
+        });
 
-            row.push(totalWealth.toFixed(2));
-            csvContent += row.join(',') + "\n";
-        }
-        
-        const link = document.createElement('a');
-        link.href = encodeURI(csvContent);
-        link.download = 'wealth_breakdown.csv';
-        link.click();
+        allFdData.forEach(f => {
+          const value = comp(f.amount, f.rate, Math.min(year, f.duration));
+          row.push(value.toFixed(2));
+          totalWealthForYear += value;
+        });
+
+        allGoldData.forEach(g => {
+          const value = comp(g.amount, g.rate, Math.min(year, g.duration));
+          row.push(value.toFixed(2));
+          totalWealthForYear += value;
+        });
+
+        allNpsData.forEach(n => {
+          const yearsToRetirement = 60 - n.currentAge;
+          const yearsToCalc = Math.min(year, yearsToRetirement);
+          let value = 0;
+          if (yearsToCalc > 0) {
+            const monthlyRate = (n.rate / 100) / 12;
+            const totalMonths = Math.floor(yearsToCalc * 12);
+            let val = 0;
+            for (let i = 0; i < totalMonths; i++) {
+              val = val * (1 + monthlyRate) + n.contribution;
+            }
+            value = val;
+          }
+          row.push(value.toFixed(2));
+          totalWealthForYear += value;
+        });
+
+        row.push(totalWealthForYear.toFixed(2));
+        csvContent += row.join(",") + "\n";
+      }
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "wealth_planner_data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
 
-    function toggleShareIcons() {
-      const shareIcons = document.querySelector('.share-icons');
-      shareIcons.classList.toggle('active');
-    }
+    // Initial setup on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const allCards = document.querySelectorAll('.card');
+      const cardTypes = ['sip', 'lumpsum', 'fd', 'gold', 'nps'];
+      allCards.forEach((card, index) => {
+        const cardType = cardTypes.find(type => card.classList.contains(`${type}-card`));
+        if (cardType) {
+          addSliderListeners(card, cardType, 0);
+        }
+      });
 
-    function setupShareLinks() {
-        const pageUrl = window.location.href;
-        const pageTitle = "Total Wealth Calculator & Planner";
-        const shareText = "Check out this free Total Wealth Calculator & Planner! It helps you estimate your future wealth by combining SIPs, Lumpsums, FDs, and NPS. #FinancialPlanning #WealthCalculator";
+      // Attach listener for the share button
+      document.getElementById('share-button').onclick = toggleShareIcons;
+      setupShareLinks();
 
-        document.querySelector('.x-share').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(shareText)}`;
-        document.querySelector('.whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
-        document.querySelector('.gmail-share').href = `mailto:?subject=${encodeURIComponent(pageTitle)}&body=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
-        document.querySelector('.facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-        document.querySelector('.instagram-share').href = `https://www.instagram.com/share?url=${encodeURIComponent(pageUrl)}`;
-    }
+      // Attach listeners for the inflation toggle and rate input
+      document.getElementById('inflation-toggle-btn').addEventListener('change', draw);
+      document.getElementById('inflation-rate').addEventListener('input', draw);
+
+      // Initial calculation on load
+      draw();
+    });
+
+    // Re-draw charts when the user returns to the page
+    window.addEventListener('focus', () => {
+      // Re-draw all charts if they are not already drawn
+      if (pieChartInstance && lineChartInstance) return;
+      draw();
+    });
   </script>
 </body>
 </html>
